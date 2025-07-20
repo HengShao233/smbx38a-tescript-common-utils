@@ -1,0 +1,3 @@
+[submodule "examples/5. textbox"]
+	path = examples/5. textbox
+	url = git@github.com:HengShao233/smbx38a-text-util.git
