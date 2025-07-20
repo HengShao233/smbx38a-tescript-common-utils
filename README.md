@@ -4,6 +4,7 @@
 - curver_utils：曲线相关
 - line_utils：直线相关
 - pool_utils：实例池
+- textbox_util：富文本/对话框
 
 # 关于 .smt 文件
 
