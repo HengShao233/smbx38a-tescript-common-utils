@@ -1,0 +1,5 @@
+gfxwidth=4096
+gfxheight=4096
+gfxsplitheight=4096
+frames=1
+framespeed=1

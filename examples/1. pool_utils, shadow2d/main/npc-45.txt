@@ -1,0 +1,3 @@
+gfxwidth=512
+gfxheight=512
+frames=1
