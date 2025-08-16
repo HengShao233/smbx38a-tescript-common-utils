@@ -574,5 +574,12 @@ Export Script CUMath_Angle(a_x As Double, a_y As Double, b_x As Double, b_y As D
     Return CUMath_Atan2(CUMath_Cross(a_x, a_y, b_x, b_y), CUMath_Dot(a_x, a_y, b_x, b_y))
 End Script
 
+' 计算随机数
+' @params seed 随机数种子
+' @return 返回 [0, 1) 的随机数
+Export Script CUMath_Rnd(seed As Double, Return Double)
+    seed = Sin(seed * 12.9898) * 43758.5453
+    Return seed - Int(seed)
+End Script
 ' ----------------------- Math END
 ' ------------------------------------

@@ -6,8 +6,6 @@
 ' ===================================== 临时变量
 
 ' ------------------------ bitmap 定义变量
-Dim libbmp_angle As Double = 0
-Dim libbmp_isVisible As Byte = 1
 Dim libbmp_isUseScreenCoord As Byte = 0
 
 Dim libbmp_sw As Long       = 1
@@ -58,12 +56,6 @@ Dim libbmp_temp_k As Double = 0
 Dim libbmp_temp_l As Double = 0
 Dim libbmp_temp_m As Double = 0
 Dim libbmp_temp_n As Double = 0
-Dim libbmp_temp_o As Double = 0
-Dim libbmp_temp_p As Double = 0
-Dim libbmp_temp_q As Double = 0
-Dim libbmp_temp_r As Double = 0
-Dim libbmp_temp_s As Double = 0
-Dim libbmp_temp_t As Double = 0
 
 ' ===================================== 创建 bmp
 
@@ -103,14 +95,9 @@ Export Script BmpNewStorePos(x As Long, y As Long)
     libbmp_destY = y
 End Script
 
-' 设置 bmp 角度
-Export Script BmpNewStoreAngle(angle As Double)
-    libbmp_angle = angle
-End Script
-
 ' 创建 bmp
 Export Script BmpNew(id As Long)
-    Call BMPCreate(id, libbmp_srcId, libbmp_isUseScreenCoord, libbmp_isVisible, libbmp_sx, libbmp_sy, libbmp_sw, libbmp_sh, libbmp_destX, libbmp_destY, libbmp_scaleW, libbmp_scaleH, 0, 0, libbmp_angle, -1)
+    Call BMPCreate(id, libbmp_srcId, libbmp_isUseScreenCoord, 1, libbmp_sx, libbmp_sy, libbmp_sw, libbmp_sh, libbmp_destX, libbmp_destY, libbmp_scaleW, libbmp_scaleH, 0, 0, 0, -1)
 End Script
 
 ' 销毁 bmp
@@ -123,11 +110,11 @@ End Script
 ' 回复旋转
 Script BmpInner_RotateReset(id As Long, Return Integer)
     libbmp_temp_m = Bitmap(id).rotatang
+    libbmp_temp_i = Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+    libbmp_temp_j = Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
     If libbmp_temp_m = 0 Then
         Return -1
     End If
-    libbmp_temp_i = Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
-    libbmp_temp_j = Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
     libbmp_temp_k = libbmp_temp_i * Cos(libbmp_temp_m) + libbmp_temp_j * Sin(libbmp_temp_m)
     libbmp_temp_l = -libbmp_temp_i * Sin(libbmp_temp_m) + libbmp_temp_j * Cos(libbmp_temp_m)
 
@@ -146,32 +133,66 @@ End Script
 ' 设置位置
 Export Script BmpPos(id As Long, x As Long, y As Long)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
-        libbmp_temp_o = Bitmap(id).rotatx
-        libbmp_temp_p = Bitmap(id).rotaty
-        Bitmap(id).rotatx = 0
-        Bitmap(id).rotaty = 0
-
         libbmp_temp_n = Bitmap(id).rotatang
         Call BmpInner_RotateReset(id)
         Bitmap(id).destx = x - Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
         Bitmap(id).desty = y - Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
         Call BmpRotate(id, libbmp_temp_n)
-        Bitmap(id).rotatx = libbmp_temp_o
-        Bitmap(id).rotaty = libbmp_temp_p
     Else
         Bitmap(id).destx = x
         Bitmap(id).desty = y
     End If
 End Script
 
+' 获取位置
+' @params id bmp id
+' @return 返回 x 坐标
+Export Script BmpGetPosX(id As Long, Return Long)
+    If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
+        libbmp_temp_m = Bitmap(id).rotatang
+        If libbmp_temp_m = 0 Then
+            Return Bitmap(id).destx + Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+        Else
+            ' reset rotate
+            libbmp_temp_i = Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+            libbmp_temp_j = Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
+            libbmp_temp_k = libbmp_temp_i * Cos(libbmp_temp_m) + libbmp_temp_j * Sin(libbmp_temp_m)
+
+            libbmp_temp_m = Bitmap(id).destx + libbmp_temp_k - libbmp_temp_i
+            Return libbmp_temp_m + Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+        End If
+    Else
+        Return Bitmap(id).destx
+    End If
+End Script
+
+' 获取位置 Y
+' @params id bmp id
+' @return 返回 y 坐标
+Export Script BmpGetPosY(id As Long, Return Long)
+    If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
+        libbmp_temp_m = Bitmap(id).rotatang
+        If libbmp_temp_m = 0 Then
+            Return Bitmap(id).desty + Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
+        Else
+            ' reset rotate
+            libbmp_temp_i = Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+            libbmp_temp_j = Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
+            libbmp_temp_k = -libbmp_temp_i * Sin(libbmp_temp_m) + libbmp_temp_j * Cos(libbmp_temp_m)
+
+            libbmp_temp_m = Bitmap(id).desty + libbmp_temp_k - libbmp_temp_j
+            Return libbmp_temp_m + Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
+        End If
+    Else
+        Return Bitmap(id).desty
+    End If
+End Script
+
 ' 设置转角
+' @params id bmp id
+' @return 返回转角
 Export Script BmpRotate(id As Long, angle As Double)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
-        libbmp_temp_q = Bitmap(id).rotatx
-        libbmp_temp_r = Bitmap(id).rotaty
-        Bitmap(id).rotatx = 0
-        Bitmap(id).rotaty = 0
-
         Call BmpInner_RotateReset(id)
         libbmp_temp_k = libbmp_temp_i * Cos(angle) + libbmp_temp_j * Sin(angle)
         libbmp_temp_l = -libbmp_temp_i * Sin(angle) + libbmp_temp_j * Cos(angle)
@@ -179,8 +200,6 @@ Export Script BmpRotate(id As Long, angle As Double)
         Bitmap(id).destx += libbmp_temp_i - libbmp_temp_k
         Bitmap(id).desty += libbmp_temp_j - libbmp_temp_l
         Bitmap(id).rotatang = angle
-        Bitmap(id).rotatx = libbmp_temp_q
-        Bitmap(id).rotaty = libbmp_temp_r
     Else
         Bitmap(id).rotatang = angle
     End If
@@ -189,11 +208,6 @@ End Script
 ' 设置缩放
 Export Script BmpScale(id As Long, scaleX As Double, scaleY As Double)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
-        libbmp_temp_s = Bitmap(id).rotatx
-        libbmp_temp_t = Bitmap(id).rotaty
-        Bitmap(id).rotatx = 0
-        Bitmap(id).rotaty = 0
-
         libbmp_temp_n = Bitmap(id).rotatang
         Call BmpInner_RotateReset(id)
         Bitmap(id).destx -= Bitmap(id).scrwidth * (1 - Bitmap(id).scalex) * libbmp_anchorX
@@ -203,8 +217,6 @@ Export Script BmpScale(id As Long, scaleX As Double, scaleY As Double)
         Bitmap(id).destx += Bitmap(id).scrwidth * (1 - Bitmap(id).scalex) * libbmp_anchorX
         Bitmap(id).desty += Bitmap(id).scrheight * (1 - Bitmap(id).scaley) * libbmp_anchorY
         Call BmpRotate(id, libbmp_temp_n)
-        Bitmap(id).rotatx = libbmp_temp_s
-        Bitmap(id).rotaty = libbmp_temp_t
     Else
         Bitmap(id).scalex = scaleX
         Bitmap(id).scaley = scaleY
