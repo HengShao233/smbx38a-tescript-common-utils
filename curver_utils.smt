@@ -542,5 +542,37 @@ Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)
     Return a * (1 - t) + t * b
 End Script
 
+' 计算点乘
+Export Script CUMath_Dot(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
+    Return a_x * b_x + a_y * b_y
+End Script
+
+' 计算叉乘
+Export Script CUMath_Cross(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
+    Return a_x * b_y - a_y * b_x
+End Script
+
+' 计算反正切
+' Return Atan(y / x)
+Export Script CUMath_Atan2(y As Double, x As Double, Return Double)
+    If x > 0 Then
+        Return Atn(y / x)
+    ElseIf x < 0 And y >= 0 Then
+        Return Atn(y / x) + PI
+    ElseIf x < 0 And y < 0 Then
+        Return Atn(y / x) - PI
+    ElseIf 0 = x And y > 0 Then
+        Return PI / 2
+    ElseIf 0 = x And y < 0 Then
+        Return -PI / 2
+    End If
+    Return 0
+End Script
+
+' 计算俩向量的逆时针夹角
+Export Script CUMath_Angle(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
+    Return CUMath_Atan2(CUMath_Cross(a_x, a_y, b_x, b_y), CUMath_Dot(a_x, a_y, b_x, b_y))
+End Script
+
 ' ----------------------- Math END
 ' ------------------------------------
