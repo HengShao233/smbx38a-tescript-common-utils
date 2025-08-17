@@ -477,7 +477,7 @@ Export Script CUEase_InOutExpo(t As Double, Return Double)
     If Abs(t) < 0.000000001 Then
         Return 0
     End If
-    If Abs(t - 1) <0.000000001 Then
+    If Abs(t - 1) < 0.000000001 Then
         Return 1
     End If
 
@@ -536,6 +536,17 @@ Export Script CUMath_Clamp01(a As Double, Return Double)
     Else
         Return a
     End If
+End Script
+
+Export Script CUMath_Remap01(f As Double, t As Double, vv As Double, Return Double)
+    If f = t Then
+        Return vv
+    End If
+    Return (vv - f) / (t - f)
+End Script
+
+Export Script CUMath_Avg(a As Double, b As Double, Return Double)
+    Return (a + b) / 2
 End Script
 
 Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)
