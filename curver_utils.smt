@@ -566,8 +566,36 @@ Export Script CUMath_Remap01(f As Double, t As Double, vv As Double, Return Doub
     Return (vv - f) / (t - f)
 End Script
 
+Export Script CUMath_Clamp(a As Double, b As Double, vv As Double, Return Double)
+    If vv < a Then
+        Return a
+    ElseIf vv > b Then
+        Return b
+    Else
+        Return vv
+    End If
+End Script
+
 Export Script CUMath_Avg(a As Double, b As Double, Return Double)
     Return (a + b) / 2
+End Script
+
+Export Script CUMath_SinLerp(a As Double, b As Double, theta As Double, Return Double)
+    theta = (Sin(theta) + 1) / 2
+    Return a * (1 - theta) + theta * b
+End Script
+
+Export Script CUMath_CosLerp(a As Double, b As Double, theta As Double, Return Double)
+    theta = (Sin(theta) + 1) / 2
+    Return a * (1 - theta) + theta * b
+End Script
+
+Export Script CUMath_Sin01(theta As Double, Return Double)
+    Return (Sin(theta) + 1) / 2
+End Script
+
+Export Script CUMath_Cos01(theta As Double, Return Double)
+    Return (Cos(theta) + 1) / 2
 End Script
 
 Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)

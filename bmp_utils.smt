@@ -221,6 +221,18 @@ Export Script BmpScale(id As Long, scaleX As Double, scaleY As Double)
     End If
 End Script
 
+Export Script BmpGetScaleX(id As Long, Return Double)
+    Return Bitmap(id).scalex
+End Script
+
+Export Script BmpGetScaleY(id As Long, Return Double)
+    Return Bitmap(id).scaley
+End Script
+
+Export Script BmpGetRotate(id As Long, Return Double)
+    Return Bitmap(id).rotatang
+End Script
+
 ' ===================================== bmp 动画
 
 ' 设置动画序列帧的起始位置
