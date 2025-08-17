@@ -30,8 +30,6 @@ Dim libbmp_animStartY As Long = 0
 
 Dim libbmp_animCnt As Long = 1
 Dim libbmp_animCeilX As Long = 0
-Dim libbmp_animIntervalX As Long = 0
-Dim libbmp_animIntervalY As Long = 0
 Dim libbmp_animLoopFrameCnt As Long = 0
 
 Dim libbmp_col_r1 As Integer = 0
@@ -244,15 +242,10 @@ Export Script BmpStoreAnimLoop(cnt As Long)
     libbmp_animLoopFrameCnt = cnt
 End Script
 
-Export Script BmpStoreAnimInterval(x As Long, y As Long)
-    libbmp_animIntervalX = x
-    libbmp_animIntervalY = y
-End Script
-
 ' 设置动画帧
 Export Script BmpAnim(id As Long, timeStamp As Long)
     If timeStamp < 0 Then
-        timeStamp = 0
+        timeStamp = -timeStamp
     End If
 
     If libbmp_animLoopFrameCnt > 0 And libbmp_animLoopFrameCnt < libbmp_animCnt And timeStamp >= libbmp_animCnt Then
@@ -264,8 +257,8 @@ Export Script BmpAnim(id As Long, timeStamp As Long)
     libbmp_temp_i = timeStamp mod libbmp_animCeilX
     libbmp_temp_j = timeStamp \ libbmp_animCeilX
 
-    Bitmap(id).scrx = libbmp_animStartX + libbmp_temp_i * (libbmp_animW + libbmp_animIntervalX)
-    Bitmap(id).scry = libbmp_animStartY + libbmp_temp_j * (libbmp_animH + libbmp_animIntervalY)
+    Bitmap(id).scrx = libbmp_animStartX + libbmp_temp_i * (libbmp_animW)
+    Bitmap(id).scry = libbmp_animStartY + libbmp_temp_j * (libbmp_animH)
 End Script
 
 ' ===================================== 颜色

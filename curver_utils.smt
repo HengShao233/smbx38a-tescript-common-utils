@@ -46,44 +46,52 @@ Dim libCurver_timeStampEnd As Double = 0    ' 时间戳
 ' 设置各个控制点的参数
 
 ' 设置 0 点
-Export Script CUSetP0(x As Double, y As Double)
+Export Script CUSetP0(x As Double, y As Double, Return Integer)
     If Abs(x - libCurver_p0_x) >= 0.01 Or Abs(y - libCurver_p0_y) >= 0.01 Then
         libCurver_bezier_lenght1 = -1
         libCurver_bezier_lenght2 = -1
         libCurver_bezier_lenght3 = -1
         libCurver_p0_x = x
         libCurver_p0_y = y
+        Return 0
     End If
+    Return 1
 End Script
 
 ' 设置 1 点
-Export Script CUSetP1(x As Double, y As Double)
+Export Script CUSetP1(x As Double, y As Double, Return Integer)
     If Abs(x - libCurver_p1_x) >= 0.01 Or Abs(y - libCurver_p1_y) >= 0.01 Then
         libCurver_bezier_lenght1 = -1
         libCurver_bezier_lenght2 = -1
         libCurver_bezier_lenght3 = -1
         libCurver_p1_x = x
         libCurver_p1_y = y
+        Return 0
     End If
+    Return 1
 End Script
 
 ' 设置 2 点
-Export Script CUSetP2(x As Double, y As Double)
+Export Script CUSetP2(x As Double, y As Double, Return Integer)
     If Abs(x - libCurver_p2_x) >= 0.01 Or Abs(y - libCurver_p2_y) >= 0.01 Then
         libCurver_bezier_lenght2 = -1
         libCurver_bezier_lenght3 = -1
         libCurver_p2_x = x
         libCurver_p2_y = y
+        Return 0
     End If
+    Return 1
 End Script
 
 ' 设置 3 点
-Export Script CUSetP3(x As Double, y As Double)
+Export Script CUSetP3(x As Double, y As Double, Return Integer)
     If Abs(x - libCurver_p3_x) >= 0.01 Or Abs(y - libCurver_p3_y) >= 0.01 Then
         libCurver_bezier_lenght3 = -1
         libCurver_p3_x = x
         libCurver_p3_y = y
+        Return 0
     End If
+    Return 1
 End Script
 
 ' ==================================================
@@ -92,7 +100,7 @@ End Script
 ' ------------------------------------
 ' ----------------------- 内建方法 BEGIN
 
-Script CUInner_SetT(t As Double)
+Script CUInner_SetT(t As Double, Return Integer)
     If Abs(t - libCurver_t) >= 0.000000001 Then
         libCurver_t = t
         libCurver_t2 = t * t
@@ -102,6 +110,7 @@ Script CUInner_SetT(t As Double)
         libCurver_n_t2 = libCurver_n_t * libCurver_n_t
         libCurver_n_t3 = libCurver_n_t2 * libCurver_n_t
     End If
+    Return 0
 End Script
 
 Script CUInner_CalcBezier3(p0 As Double, p1 As Double, p2 As Double, p3 As Double, Return Double)
@@ -233,49 +242,55 @@ End Script
 ' 应用曲线到 bitmap 位置坐标
 ' params id bitmap id
 ' params t 曲线参数
-Export Script CUSetBmpPosBezier3(id As Long, t As Double)
+Export Script CUSetBmpPosBezier3(id As Long, t As Double, Return Double)
     Bitmap(id).destx = CUCalcBezier3X(t)
     Bitmap(id).desty = CUCalcBezier3Y(t)
+    Return t
 End Script
 
 ' 应用曲线到 bitmap 位置坐标
 ' params id bitmap id
 ' params t 曲线参数
-Export Script CUSetBmpPosBezier2(id As Long, t As Double)
+Export Script CUSetBmpPosBezier2(id As Long, t As Double, Return Double)
     Bitmap(id).destx = CUCalcBezier2X(t)
     Bitmap(id).desty = CUCalcBezier2Y(t)
+    Return t
 End Script
 
 ' 应用曲线到 bitmap 位置坐标
 ' params id bitmap id
 ' params t 曲线参数
-Export Script CUSetBmpPosBezier1(id As Long, t As Double)
+Export Script CUSetBmpPosBezier1(id As Long, t As Double, Return Double)
     Bitmap(id).destx = CUCalcBezier1X(t)
     Bitmap(id).desty = CUCalcBezier1Y(t)
+    Return t
 End Script
 
 ' 应用曲线到 bitmap 缩放
 ' params id bitmap id
 ' params t 曲线参数
-Export Script CUSetBmpScaleBezier3(id As Long, t As Double)
+Export Script CUSetBmpScaleBezier3(id As Long, t As Double, Return Double)
     Bitmap(id).scalex = CUCalcBezier3X(t)
     Bitmap(id).scaley = CUCalcBezier3Y(t)
+    Return t
 End Script
 
 ' 应用曲线到 bitmap 缩放
 ' params id bitmap id
 ' params t 曲线参数
-Export Script CUSetBmpScaleBezier2(id As Long, t As Double)
+Export Script CUSetBmpScaleBezier2(id As Long, t As Double, Return Double)
     Bitmap(id).scalex = CUCalcBezier2X(t)
     Bitmap(id).scaley = CUCalcBezier2Y(t)
+    Return t
 End Script
 
 ' 应用曲线到 bitmap 缩放
 ' params id bitmap id
 ' params t 曲线参数
-Export Script CUSetBmpScaleBezier1(id As Long, t As Double)
+Export Script CUSetBmpScaleBezier1(id As Long, t As Double, Return Double)
     Bitmap(id).scalex = CUCalcBezier1X(t)
     Bitmap(id).scaley = CUCalcBezier1Y(t)
+    Return t
 End Script
 
 ' ----------------------- 应用曲线 END
@@ -287,19 +302,21 @@ End Script
 ' 设置时间戳端点
 ' @params startTimeStamp 时间戳起点
 ' @params endTimeStamp 时间戳终点
-Export Script CUTimeSetStamp(startTimeStamp As Double, endTimeStamp As Double)
+Export Script CUTimeSetStamp(startTimeStamp As Double, endTimeStamp As Double, Return Double)
     libCurver_timeStampEnd = endTimeStamp
     libCurver_timeStampStart = startTimeStamp
+    Return endTimeStamp - startTimeStamp
 End Script
 
 ' 设置时间戳分割数
 ' @params timeStampSplit 时间戳分割数
-Export Script CUTimeSetSplit(timeStampSplit As Long)
+Export Script CUTimeSetSplit(timeStampSplit As Long, Return Long)
     If timeStampSplit <= 0 Then
         libCurver_timeStampSplitCnt = 1
     Else
         libCurver_timeStampSplitCnt = timeStampSplit
     End If
+    Return timeStampSplit
 End Script
 
 ' 计算 t 参数
@@ -323,7 +340,12 @@ End Script
 ' 计算已分段的 t 参数
 ' @params t 当前全局时间参数
 ' @return 返回范围为 [0, 1] 的参数
-Export Script CUTimeCalcSplitedT(t As Double, Return Double)
+Export Script CUTimeCalcSplitT(t As Double, Return Double)
+    If t >= 1 Then
+        Return 1
+    ElseIf t <= 0 Then
+        Return 0
+    End If
     t = t * libCurver_timeStampSplitCnt
     Return t - Int(t)
 End Script
@@ -339,7 +361,7 @@ End Script
 ' @params t 当前全局时间参数
 ' @params curSplitIdx 当前段号
 ' @return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
-Export Script CUTimeCalcSplitedTByIdx(t As Double, curSplitIdx As Long, Return Double)
+Export Script CUTimeCalcSplitTByIdx(t As Double, curSplitIdx As Long, Return Double)
     If curSplitIdx <= 0 Or curSplitIdx > libCurver_timeStampSplitCnt - 1 Then
         Return -1
     End If
@@ -355,7 +377,7 @@ End Script
 ' 计算已分段的 t 参数
 ' @params timeStamp 当前时间戳
 ' @return 返回范围为 [0, 1] 的参数
-Export Script CUTimeCalcSplitedTByStamp(timeStamp As Double, Return Double)
+Export Script CUTimeCalcSplitTByStamp(timeStamp As Double, Return Double)
     timeStamp = CUTimeCalcT(timeStamp)
     timeStamp = timeStamp * libCurver_timeStampSplitCnt
     Return timeStamp - Int(timeStamp)
@@ -373,7 +395,7 @@ End Script
 ' @params timeStamp 当前时间戳
 ' @params curSplitIdx 当前段号
 ' @return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
-Export Script CUTimeCalcSplitedTByStampAndIdx(timeStamp As Double, curSplitIdx As Long, Return Double)
+Export Script CUTimeCalcSplitTByStampAndIdx(timeStamp As Double, curSplitIdx As Long, Return Double)
     timeStamp = CUTimeCalcT(timeStamp)
     If curSplitIdx <= 0 Or curSplitIdx > libCurver_timeStampSplitCnt - 1 Then
         Return -1
@@ -446,8 +468,7 @@ End Script
 
 Export Script CUEase_OutQuart(t As Double, Return Double)
     t = t - 1
-    t = t * t
-    Return -t * t + 1
+    Return -t * t * t * t + 1
 End Script
 
 Export Script CUEase_InOutQuart(t As Double, Return Double)
