@@ -581,5 +581,17 @@ Export Script CUMath_Rnd(seed As Double, Return Double)
     seed = Sin(seed * 12.9898) * 43758.5453
     Return seed - Int(seed)
 End Script
+
+' 计算向量逆时针旋转
+' angle 角度, 弧度制
+Export Script CUMath_VecRotateX(a_x As Double, a_y As Double, angle As Double, Return Double)
+    Return a_x * Cos(angle) - a_y * Sin(angle)
+End Script
+
+' 计算向量逆时针旋转
+' angle 角度, 弧度制
+Export Script CUMath_VecRotateY(a_x As Double, a_y As Double, angle As Double, Return Double)
+    Return a_x * Sin(angle) + a_y * Cos(angle)
+End Script
 ' ----------------------- Math END
 ' ------------------------------------
