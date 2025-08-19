@@ -42,6 +42,9 @@ Dim libCurver_timeStampSplitCnt As Long = 1 ' 时间戳分割
 Dim libCurver_timeStampStart As Double = 0  ' 时间戳
 Dim libCurver_timeStampEnd As Double = 0    ' 时间戳
 
+Dim libCurver_retX As Double = 0           ' 返回值 X
+Dim libCurver_retY As Double = 0             ' 返回值 Y
+
 ' ==================================================
 ' 设置各个控制点的参数
 
@@ -644,14 +647,44 @@ End Script
 
 ' 计算向量逆时针旋转
 ' angle 角度, 弧度制
-Export Script CUMath_VecRotateX(a_x As Double, a_y As Double, angle As Double, Return Double)
-    Return a_x * Cos(angle) - a_y * Sin(angle)
+Export Script CUMath_VecRotate(a_x As Double, a_y As Double, angle As Double, Return Integer)
+    libCurver_retX = a_x * Cos(angle) - a_y * Sin(angle)
+    libCurver_retY = a_x * Sin(angle) + a_y * Cos(angle)
+    Return libCurver_retX
 End Script
 
-' 计算向量逆时针旋转
-' angle 角度, 弧度制
-Export Script CUMath_VecRotateY(a_x As Double, a_y As Double, angle As Double, Return Double)
-    Return a_x * Sin(angle) + a_y * Cos(angle)
+' 计算向量归一化
+' 返回值为 0 时表示向量长度为 0, 否则返回
+Export Script CUMath_VecNormal(a_x As Double, a_y As Double, Return Integer)
+    If a_x = 0 And a_y = 0 Then
+        libCurver_retX = 0
+        libCurver_retY = 0
+        Return 0
+    End If
+    libCurver_retX = a_x / Sqr(a_x * a_x + a_y * a_y)
+    libCurver_retY = a_y / Sqr(a_x * a_x + a_y * a_y)
+    Return libCurver_retX
 End Script
+
+' 向量模长
+Export Script CUMath_VecLength(a_x As Double, a_y As Double, Return Double)
+    Return Sqr(a_x * a_x + a_y * a_y)
+End Script
+
+' 向量模长平方
+Export Script CUMath_VecLength2(a_x As Double, a_y As Double, Return Double)
+    Return a_x * a_x + a_y * a_y
+End Script
+
+' 获取向量计算结果返回值 X
+Export Script CUMath_GetVecRetX(Return Double)
+    Return libCurver_retX
+End Script
+
+' 获取向量计算结果返回值 Y
+Export Script CUMath_GetVecRetY(Return Double)
+    Return libCurver_retY
+End Script
+
 ' ----------------------- Math END
 ' ------------------------------------

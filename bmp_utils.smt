@@ -47,6 +47,9 @@ Dim libbmp_offsetAnimH As Long = 0
 Dim libbmp_offsetAnimStartX As Long = 0
 Dim libbmp_offsetAnimStartY As Long = 0
 
+Dim libbmp_retX As Double = 0
+Dim libbmp_retY As Double = 0
+
 ' ------------------------ 临时变量
 Dim libbmp_temp_i As Double = 0
 Dim libbmp_temp_j As Double = 0
@@ -54,6 +57,7 @@ Dim libbmp_temp_k As Double = 0
 Dim libbmp_temp_l As Double = 0
 Dim libbmp_temp_m As Double = 0
 Dim libbmp_temp_n As Double = 0
+Dim libbmp_temp_o As Double = 0
 
 ' ===================================== 创建 bmp
 
@@ -145,45 +149,29 @@ End Script
 ' 获取位置
 ' @params id bmp id
 ' @return 返回 x 坐标
-Export Script BmpGetPosX(id As Long, Return Long)
+Export Script BmpGetPos(id As Long, Return Integer)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
         libbmp_temp_m = Bitmap(id).rotatang
-        If libbmp_temp_m = 0 Then
-            Return Bitmap(id).destx + Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+        If Abs(libbmp_temp_m) <= 0.00000000001 Then
+            libbmp_retX = Bitmap(id).destx + Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+            libbmp_retY = Bitmap(id).desty + Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
         Else
             ' reset rotate
+            libbmp_temp_n = Cos(libbmp_temp_m)
+            libbmp_temp_o = Sin(libbmp_temp_m)
             libbmp_temp_i = Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
             libbmp_temp_j = Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
-            libbmp_temp_k = libbmp_temp_i * Cos(libbmp_temp_m) + libbmp_temp_j * Sin(libbmp_temp_m)
 
-            libbmp_temp_m = Bitmap(id).destx + libbmp_temp_k - libbmp_temp_i
-            Return libbmp_temp_m + Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
+            libbmp_temp_k = libbmp_temp_i * libbmp_temp_n + libbmp_temp_j * libbmp_temp_o
+            libbmp_temp_l = -libbmp_temp_i * libbmp_temp_o + libbmp_temp_j * libbmp_temp_n
+            libbmp_retX = Bitmap(id).destx + libbmp_temp_k
+            libbmp_retY = Bitmap(id).desty + libbmp_temp_l
         End If
     Else
-        Return Bitmap(id).destx
+        libbmp_retX = Bitmap(id).destx
+        libbmp_retY = Bitmap(id).desty
     End If
-End Script
-
-' 获取位置 Y
-' @params id bmp id
-' @return 返回 y 坐标
-Export Script BmpGetPosY(id As Long, Return Long)
-    If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
-        libbmp_temp_m = Bitmap(id).rotatang
-        If libbmp_temp_m = 0 Then
-            Return Bitmap(id).desty + Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
-        Else
-            ' reset rotate
-            libbmp_temp_i = Bitmap(id).scrwidth * Bitmap(id).scalex * libbmp_anchorX
-            libbmp_temp_j = Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
-            libbmp_temp_k = -libbmp_temp_i * Sin(libbmp_temp_m) + libbmp_temp_j * Cos(libbmp_temp_m)
-
-            libbmp_temp_m = Bitmap(id).desty + libbmp_temp_k - libbmp_temp_j
-            Return libbmp_temp_m + Bitmap(id).scrheight * Bitmap(id).scaley * libbmp_anchorY
-        End If
-    Else
-        Return Bitmap(id).desty
-    End If
+    Return 0
 End Script
 
 ' 设置转角
@@ -221,16 +209,22 @@ Export Script BmpScale(id As Long, scaleX As Double, scaleY As Double)
     End If
 End Script
 
-Export Script BmpGetScaleX(id As Long, Return Double)
-    Return Bitmap(id).scalex
-End Script
-
-Export Script BmpGetScaleY(id As Long, Return Double)
-    Return Bitmap(id).scaley
+Export Script BmpGetScale(id As Long, Return Integer)
+    libbmp_retX = Bitmap(id).scalex
+    libbmp_retY = Bitmap(id).scaley
+    Return 0
 End Script
 
 Export Script BmpGetRotate(id As Long, Return Double)
     Return Bitmap(id).rotatang
+End Script
+
+Export Script BmpGetRetX(Return Double)
+    Return libbmp_retX
+End Script
+
+Export Script BmpGetRetY(Return Double)
+    Return libbmp_retY
 End Script
 
 ' ===================================== bmp 动画
