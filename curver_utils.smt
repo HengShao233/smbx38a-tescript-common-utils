@@ -605,6 +605,22 @@ Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)
     Return a * (1 - t) + t * b
 End Script
 
+Export Script CUMath_Step(a As Double, b As Double, Return Integer)
+    If a < b Then
+        Return 0
+    Else
+        Return 1
+    End If
+End Script
+
+Export Script CUMath_Select(a As Double, b As Double, vv As Double, Return Double)
+    If vv < 0 Then
+        Return a
+    Else
+        Return b
+    End If
+End Script
+
 ' 计算点乘
 Export Script CUMath_Dot(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return a_x * b_x + a_y * b_y
@@ -674,6 +690,27 @@ End Script
 ' 向量模长平方
 Export Script CUMath_VecLength2(a_x As Double, a_y As Double, Return Double)
     Return a_x * a_x + a_y * a_y
+End Script
+
+' 向量加法
+Export Script CUMath_VecAdd(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
+    libCurver_retX = a_x + b_x
+    libCurver_retY = a_y + b_y
+    Return libCurver_retX
+End Script
+
+' 向量减法
+Export Script CUMath_VecSub(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
+    libCurver_retX = a_x - b_x
+    libCurver_retY = a_y - b_y
+    Return libCurver_retX
+End Script
+
+' 向量数乘
+Export Script CUMath_VecMul(a_x As Double, a_y As Double, b As Double, Return Double)
+    libCurver_retX = a_x * b
+    libCurver_retY = a_y * b
+    Return libCurver_retX
 End Script
 
 ' 获取向量计算结果返回值 X
