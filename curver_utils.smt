@@ -674,8 +674,8 @@ End Script
 ' 计算向量逆时针旋转
 ' angle 角度, 弧度制
 Export Script CUMath_VecRotate(a_x As Double, a_y As Double, angle As Double, Return Integer)
-    libCurver_retX = a_x * Cos(angle) - a_y * Sin(angle)
-    libCurver_retY = a_x * Sin(angle) + a_y * Cos(angle)
+    libCurver_retX = a_x * Cos(angle) + a_y * Sin(angle)
+    libCurver_retY = -a_x * Sin(angle) + a_y * Cos(angle)
     Return libCurver_retX
 End Script
 
