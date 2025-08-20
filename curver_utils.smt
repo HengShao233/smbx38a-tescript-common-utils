@@ -614,7 +614,7 @@ Export Script CUMath_Step(a As Double, b As Double, Return Integer)
 End Script
 
 Export Script CUMath_Select(a As Double, b As Double, vv As Double, Return Double)
-    If vv < 0 Then
+    If vv <= 0 Then
         Return a
     Else
         Return b
