@@ -621,6 +621,16 @@ Export Script CUMath_Select(a As Double, b As Double, vv As Double, Return Doubl
     End If
 End Script
 
+Export Script CUMath_SmoothStep(a As Double, b As Double, vv As Double, Return Double)
+    If vv <= 0 Then
+        Return a
+    ElseIf vv >= 1 Then
+        Return b
+    Else
+        Return CUMath_Lerp(a, b, vv * vv * (3 - 2 * vv))
+    End If
+End Script
+
 ' 计算点乘
 Export Script CUMath_Dot(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return a_x * b_x + a_y * b_y
