@@ -1,4 +1,4 @@
-' 曲线工具集
+' 曲线 / 数学工具集
 '                       -- 20231206 小豆
 
 ' ==================================================
@@ -9,53 +9,70 @@
 ' ==================================================
 ' 内建变量
 
+' 常量
+Dim MAX_FLOAT As Double = 3.402823466 * 10^38
+Dim MIN_FLOAT As Double = 1.40129846432482 * 10^-45
+Dim MAX_SAFE_DOUBLE As Double = 562949953421312
+
+Export Script CUMath_MAX_SAFE_INTEGER(Return Double)
+    Return MAX_SAFE_DOUBLE
+End Script
+
+Export Script CUMath_MAX_SAFE_FLOAT(Return Double)
+    Return MAX_FLOAT
+End Script
+
+Export Script CUMath_MIN_SAFE_FLOAT(Return Double)
+    Return MIN_FLOAT
+End Script
+
 ' 顶点数据
-Dim libCurver_p0_x As Double = 0
-Dim libCurver_p0_y As Double = 0
-Dim libCurver_p1_x As Double = 0
-Dim libCurver_p1_y As Double = 0
-Dim libCurver_p2_x As Double = 0
-Dim libCurver_p2_y As Double = 0
-Dim libCurver_p3_x As Double = 0
-Dim libCurver_p3_y As Double = 0
+Dim libCurve_p0_x As Double = 0
+Dim libCurve_p0_y As Double = 0
+Dim libCurve_p1_x As Double = 0
+Dim libCurve_p1_y As Double = 0
+Dim libCurve_p2_x As Double = 0
+Dim libCurve_p2_y As Double = 0
+Dim libCurve_p3_x As Double = 0
+Dim libCurve_p3_y As Double = 0
 
 ' 长度数据
-Dim libCurver_bezier_lenght3 As Double = -1
-Dim libCurver_bezier_lenght2 As Double = -1
-Dim libCurver_bezier_lenght1 As Double = -1
+Dim libCurve_bezier_lenght3 As Double = -1
+Dim libCurve_bezier_lenght2 As Double = -1
+Dim libCurve_bezier_lenght1 As Double = -1
 
 ' 临时变量
-Dim libCurver_tempA As Double = 0           ' 临时变量 A
-Dim libCurver_tempB As Double = 0           ' 临时变量 B
-Dim libCurver_tempC As Byte = 0             ' 临时变量 C
-Dim libCurver_tempD As Double = 0           ' 临时变量 D
-Dim libCurver_tempE As Double = 0           ' 临时变量 E
-Dim libCurver_tempF As Double = 0           ' 临时变量 F
-Dim libCurver_tempG As Double = 0           ' 临时变量 G
-Dim libCurver_t As Double = 0               ' t
-Dim libCurver_t2 As Double = 0              ' t^2
-Dim libCurver_t3 As Double = 0              ' t^3
-Dim libCurver_n_t As Double = 1             ' 1 - t
-Dim libCurver_n_t2 As Double = 1            ' (1 - t)^2
-Dim libCurver_n_t3 As Double = 1            ' (1 - t)^3
-Dim libCurver_timeStampSplitCnt As Long = 1 ' 时间戳分割
-Dim libCurver_timeStampStart As Double = 0  ' 时间戳
-Dim libCurver_timeStampEnd As Double = 0    ' 时间戳
+Dim libCurve_tempA As Double = 0           ' 临时变量 A
+Dim libCurve_tempB As Double = 0           ' 临时变量 B
+Dim libCurve_tempC As Byte = 0             ' 临时变量 C
+Dim libCurve_tempD As Double = 0           ' 临时变量 D
+Dim libCurve_tempE As Double = 0           ' 临时变量 E
+Dim libCurve_tempF As Double = 0           ' 临时变量 F
+Dim libCurve_tempG As Double = 0           ' 临时变量 G
+Dim libCurve_t As Double = 0               ' t
+Dim libCurve_t2 As Double = 0              ' t^2
+Dim libCurve_t3 As Double = 0              ' t^3
+Dim libCurve_n_t As Double = 1             ' 1 - t
+Dim libCurve_n_t2 As Double = 1            ' (1 - t)^2
+Dim libCurve_n_t3 As Double = 1            ' (1 - t)^3
+Dim libCurve_timeStampSplitCnt As Long = 1 ' 时间戳分割
+Dim libCurve_timeStampStart As Double = 0  ' 时间戳
+Dim libCurve_timeStampEnd As Double = 0    ' 时间戳
 
-Dim libCurver_retX As Double = 0           ' 返回值 X
-Dim libCurver_retY As Double = 0             ' 返回值 Y
+Dim libCurve_retX As Double = 0           ' 返回值 X
+Dim libCurve_retY As Double = 0             ' 返回值 Y
 
 ' ==================================================
 ' 设置各个控制点的参数
 
 ' 设置 0 点
 Export Script CUSetP0(x As Double, y As Double, Return Integer)
-    If Abs(x - libCurver_p0_x) >= 0.01 Or Abs(y - libCurver_p0_y) >= 0.01 Then
-        libCurver_bezier_lenght1 = -1
-        libCurver_bezier_lenght2 = -1
-        libCurver_bezier_lenght3 = -1
-        libCurver_p0_x = x
-        libCurver_p0_y = y
+    If Abs(x - libCurve_p0_x) >= 0.01 Or Abs(y - libCurve_p0_y) >= 0.01 Then
+        libCurve_bezier_lenght1 = -1
+        libCurve_bezier_lenght2 = -1
+        libCurve_bezier_lenght3 = -1
+        libCurve_p0_x = x
+        libCurve_p0_y = y
         Return 0
     End If
     Return 1
@@ -63,12 +80,12 @@ End Script
 
 ' 设置 1 点
 Export Script CUSetP1(x As Double, y As Double, Return Integer)
-    If Abs(x - libCurver_p1_x) >= 0.01 Or Abs(y - libCurver_p1_y) >= 0.01 Then
-        libCurver_bezier_lenght1 = -1
-        libCurver_bezier_lenght2 = -1
-        libCurver_bezier_lenght3 = -1
-        libCurver_p1_x = x
-        libCurver_p1_y = y
+    If Abs(x - libCurve_p1_x) >= 0.01 Or Abs(y - libCurve_p1_y) >= 0.01 Then
+        libCurve_bezier_lenght1 = -1
+        libCurve_bezier_lenght2 = -1
+        libCurve_bezier_lenght3 = -1
+        libCurve_p1_x = x
+        libCurve_p1_y = y
         Return 0
     End If
     Return 1
@@ -76,11 +93,11 @@ End Script
 
 ' 设置 2 点
 Export Script CUSetP2(x As Double, y As Double, Return Integer)
-    If Abs(x - libCurver_p2_x) >= 0.01 Or Abs(y - libCurver_p2_y) >= 0.01 Then
-        libCurver_bezier_lenght2 = -1
-        libCurver_bezier_lenght3 = -1
-        libCurver_p2_x = x
-        libCurver_p2_y = y
+    If Abs(x - libCurve_p2_x) >= 0.01 Or Abs(y - libCurve_p2_y) >= 0.01 Then
+        libCurve_bezier_lenght2 = -1
+        libCurve_bezier_lenght3 = -1
+        libCurve_p2_x = x
+        libCurve_p2_y = y
         Return 0
     End If
     Return 1
@@ -88,10 +105,10 @@ End Script
 
 ' 设置 3 点
 Export Script CUSetP3(x As Double, y As Double, Return Integer)
-    If Abs(x - libCurver_p3_x) >= 0.01 Or Abs(y - libCurver_p3_y) >= 0.01 Then
-        libCurver_bezier_lenght3 = -1
-        libCurver_p3_x = x
-        libCurver_p3_y = y
+    If Abs(x - libCurve_p3_x) >= 0.01 Or Abs(y - libCurve_p3_y) >= 0.01 Then
+        libCurve_bezier_lenght3 = -1
+        libCurve_p3_x = x
+        libCurve_p3_y = y
         Return 0
     End If
     Return 1
@@ -104,28 +121,28 @@ End Script
 ' ----------------------- 内建方法 BEGIN
 
 Script CUInner_SetT(t As Double, Return Integer)
-    If Abs(t - libCurver_t) >= 0.000000001 Then
-        libCurver_t = t
-        libCurver_t2 = t * t
-        libCurver_t3 = libCurver_t2 * t
+    If Abs(t - libCurve_t) >= 0.000000001 Then
+        libCurve_t = t
+        libCurve_t2 = t * t
+        libCurve_t3 = libCurve_t2 * t
 
-        libCurver_n_t = 1 - t
-        libCurver_n_t2 = libCurver_n_t * libCurver_n_t
-        libCurver_n_t3 = libCurver_n_t2 * libCurver_n_t
+        libCurve_n_t = 1 - t
+        libCurve_n_t2 = libCurve_n_t * libCurve_n_t
+        libCurve_n_t3 = libCurve_n_t2 * libCurve_n_t
     End If
     Return 0
 End Script
 
 Script CUInner_CalcBezier3(p0 As Double, p1 As Double, p2 As Double, p3 As Double, Return Double)
-    Return libCurver_n_t3 * p0 + 3 * libCurver_n_t2 * libCurver_t * p1 + 3 * libCurver_n_t * libCurver_t2 * p2 + libCurver_t3 * p3
+    Return libCurve_n_t3 * p0 + 3 * libCurve_n_t2 * libCurve_t * p1 + 3 * libCurve_n_t * libCurve_t2 * p2 + libCurve_t3 * p3
 End Script
 
 Script CUInner_CalcBezier2(p0 As Double, p1 As Double, p2 As Double, Return Double)
-    Return libCurver_n_t2 * p0 + 2 * libCurver_n_t * libCurver_t * p1 + libCurver_t2 * p2
+    Return libCurve_n_t2 * p0 + 2 * libCurve_n_t * libCurve_t * p1 + libCurve_t2 * p2
 End Script
 
 Script CUInner_CalcBezier1(p0 As Double, p1 As Double, Return Double)
-    Return libCurver_n_t2 * p0 + libCurver_t2 * p1
+    Return libCurve_n_t2 * p0 + libCurve_t2 * p1
 End Script
 
 Script CUInner_CalcDistancePP(x1 As Double, y1 As Double, x2 As Double, y2 As Double, Return Double)
@@ -143,37 +160,37 @@ End Script
 ' 计算三次曲线 x 坐标
 Export Script CUCalcBezier3X(t As Double, Return Double)
     Call CUInner_SetT(t)
-    Return CUInner_CalcBezier3(libCurver_p0_x, libCurver_p1_x, libCurver_p2_x, libCurver_p3_x)
+    Return CUInner_CalcBezier3(libCurve_p0_x, libCurve_p1_x, libCurve_p2_x, libCurve_p3_x)
 End Script
 
 ' 计算三次曲线 y 坐标
 Export Script CUCalcBezier3Y(t As Double, Return Double)
     Call CUInner_SetT(t)
-    Return CUInner_CalcBezier3(libCurver_p0_y, libCurver_p1_y, libCurver_p2_y, libCurver_p3_y)
+    Return CUInner_CalcBezier3(libCurve_p0_y, libCurve_p1_y, libCurve_p2_y, libCurve_p3_y)
 End Script
 
 ' 计算二次曲线 x 坐标
 Export Script CUCalcBezier2X(t As Double, Return Double)
     Call CUInner_SetT(t)
-    Return CUInner_CalcBezier2(libCurver_p0_x, libCurver_p1_x, libCurver_p2_x)
+    Return CUInner_CalcBezier2(libCurve_p0_x, libCurve_p1_x, libCurve_p2_x)
 End Script
 
 ' 计算二次曲线 y 坐标
 Export Script CUCalcBezier2Y(t As Double, Return Double)
     Call CUInner_SetT(t)
-    Return CUInner_CalcBezier2(libCurver_p0_y, libCurver_p1_y, libCurver_p2_y)
+    Return CUInner_CalcBezier2(libCurve_p0_y, libCurve_p1_y, libCurve_p2_y)
 End Script
 
 ' 计算一次曲线 x 坐标
 Export Script CUCalcBezier1X(t As Double, Return Double)
     Call CUInner_SetT(t)
-    Return CUInner_CalcBezier1(libCurver_p0_x, libCurver_p1_x)
+    Return CUInner_CalcBezier1(libCurve_p0_x, libCurve_p1_x)
 End Script
 
 ' 计算一次曲线 y 坐标
 Export Script CUCalcBezier1Y(t As Double, Return Double)
     Call CUInner_SetT(t)
-    Return CUInner_CalcBezier1(libCurver_p0_y, libCurver_p1_y)
+    Return CUInner_CalcBezier1(libCurve_p0_y, libCurve_p1_y)
 End Script
 
 ' ----------------------- 计算贝塞尔曲线结果坐标 END
@@ -184,56 +201,56 @@ End Script
 
 ' 近似计算三阶贝塞尔曲线长度
 Export Script CUCalcBezier3Len(Return Double)
-    If libCurver_bezier_lenght3 > 0 Then
-        Return libCurver_bezier_lenght3
+    If libCurve_bezier_lenght3 > 0 Then
+        Return libCurve_bezier_lenght3
     End If
 
-    libCurver_tempB = 0
-    libCurver_tempD = libCurver_p0_x
-    libCurver_tempE = libCurver_p0_y
-    For libCurver_tempC = 1 To 25
-        libCurver_tempA = libCurver_tempC / 25
+    libCurve_tempB = 0
+    libCurve_tempD = libCurve_p0_x
+    libCurve_tempE = libCurve_p0_y
+    For libCurve_tempC = 1 To 25
+        libCurve_tempA = libCurve_tempC / 25
 
-        libCurver_tempF = CUCalcBezier3X(libCurver_tempA)
-        libCurver_tempG = CUCalcBezier3Y(libCurver_tempA)
-        libCurver_tempB += CUInner_CalcDistancePP(libCurver_tempD, libCurver_tempE, libCurver_tempF, libCurver_tempG)
-        libCurver_tempD = libCurver_tempF
-        libCurver_tempE = libCurver_tempG
+        libCurve_tempF = CUCalcBezier3X(libCurve_tempA)
+        libCurve_tempG = CUCalcBezier3Y(libCurve_tempA)
+        libCurve_tempB += CUInner_CalcDistancePP(libCurve_tempD, libCurve_tempE, libCurve_tempF, libCurve_tempG)
+        libCurve_tempD = libCurve_tempF
+        libCurve_tempE = libCurve_tempG
     Next
-    libCurver_bezier_lenght3 = libCurver_tempB
-    Return libCurver_bezier_lenght3
+    libCurve_bezier_lenght3 = libCurve_tempB
+    Return libCurve_bezier_lenght3
 End Script
 
 ' 近似计算二阶贝塞尔曲线长度
 Export Script CUCalcBezier2Len(Return Double)
-    If libCurver_bezier_lenght2 > 0 Then
-        Return libCurver_bezier_lenght2
+    If libCurve_bezier_lenght2 > 0 Then
+        Return libCurve_bezier_lenght2
     End If
 
-    libCurver_tempB = 0
-    libCurver_tempD = libCurver_p0_x
-    libCurver_tempE = libCurver_p0_y
-    For libCurver_tempC = 1 To 25
-        libCurver_tempA = libCurver_tempC / 25
+    libCurve_tempB = 0
+    libCurve_tempD = libCurve_p0_x
+    libCurve_tempE = libCurve_p0_y
+    For libCurve_tempC = 1 To 25
+        libCurve_tempA = libCurve_tempC / 25
 
-        libCurver_tempF = CUCalcBezier2X(libCurver_tempA)
-        libCurver_tempG = CUCalcBezier2Y(libCurver_tempA)
-        libCurver_tempB += CUInner_CalcDistancePP(libCurver_tempD, libCurver_tempE, libCurver_tempF, libCurver_tempG)
-        libCurver_tempD = libCurver_tempF
-        libCurver_tempE = libCurver_tempG
+        libCurve_tempF = CUCalcBezier2X(libCurve_tempA)
+        libCurve_tempG = CUCalcBezier2Y(libCurve_tempA)
+        libCurve_tempB += CUInner_CalcDistancePP(libCurve_tempD, libCurve_tempE, libCurve_tempF, libCurve_tempG)
+        libCurve_tempD = libCurve_tempF
+        libCurve_tempE = libCurve_tempG
     Next
-    libCurver_bezier_lenght2 = libCurver_tempB
-    Return libCurver_bezier_lenght2
+    libCurve_bezier_lenght2 = libCurve_tempB
+    Return libCurve_bezier_lenght2
 End Script
 
 ' 计算一阶贝塞尔曲线长度
 Export Script CUCalcBezier1Len(Return Double)
-    If libCurver_bezier_lenght1 > 0 Then
-        Return libCurver_bezier_lenght1
+    If libCurve_bezier_lenght1 > 0 Then
+        Return libCurve_bezier_lenght1
     End If
 
-    libCurver_bezier_lenght1 = CUInner_CalcDistancePP(libCurver_p0_x, libCurver_p0_y, libCurver_p1_x, libCurver_p1_y)
-    Return libCurver_bezier_lenght1
+    libCurve_bezier_lenght1 = CUInner_CalcDistancePP(libCurve_p0_x, libCurve_p0_y, libCurve_p1_x, libCurve_p1_y)
+    Return libCurve_bezier_lenght1
 End Script
 
 ' ----------------------- 计算贝塞尔曲线长度 END
@@ -306,8 +323,8 @@ End Script
 ' @params startTimeStamp 时间戳起点
 ' @params endTimeStamp 时间戳终点
 Export Script CUTimeSetStamp(startTimeStamp As Double, endTimeStamp As Double, Return Double)
-    libCurver_timeStampEnd = endTimeStamp
-    libCurver_timeStampStart = startTimeStamp
+    libCurve_timeStampEnd = endTimeStamp
+    libCurve_timeStampStart = startTimeStamp
     Return endTimeStamp - startTimeStamp
 End Script
 
@@ -315,9 +332,9 @@ End Script
 ' @params timeStampSplit 时间戳分割数
 Export Script CUTimeSetSplit(timeStampSplit As Long, Return Long)
     If timeStampSplit <= 0 Then
-        libCurver_timeStampSplitCnt = 1
+        libCurve_timeStampSplitCnt = 1
     Else
-        libCurver_timeStampSplitCnt = timeStampSplit
+        libCurve_timeStampSplitCnt = timeStampSplit
     End If
     Return timeStampSplit
 End Script
@@ -326,11 +343,11 @@ End Script
 ' @params timeStamp 当前时间戳
 ' @return t 参数
 Export Script CUTimeCalcT(timeStamp As Double, Return Double)
-    If Abs(libCurver_timeStampEnd - libCurver_timeStampStart) < 0.000000001 Then
+    If Abs(libCurve_timeStampEnd - libCurve_timeStampStart) < 0.000000001 Then
         Return 1
     End If
 
-    timeStamp = (timeStamp - libCurver_timeStampStart) / (libCurver_timeStampEnd - libCurver_timeStampStart)
+    timeStamp = (timeStamp - libCurve_timeStampStart) / (libCurve_timeStampEnd - libCurve_timeStampStart)
     If timeStamp < 0 Then
         Return 0
     ElseIf timeStamp > 1 Then
@@ -349,7 +366,7 @@ Export Script CUTimeCalcSplitT(t As Double, Return Double)
     ElseIf t <= 0 Then
         Return 0
     End If
-    t = t * libCurver_timeStampSplitCnt
+    t = t * libCurve_timeStampSplitCnt
     Return t - Int(t)
 End Script
 
@@ -357,7 +374,7 @@ End Script
 ' @params t 当前全局时间参数
 ' @return 当前所处段号
 Export Script CUTimeCalcSplitIdx(t As Double, Return Long)
-    Return Int(t * libCurver_timeStampSplitCnt)
+    Return Int(t * libCurve_timeStampSplitCnt)
 End Script
 
 ' 计算已分段 t 参数 (t∈[0, 1])
@@ -365,11 +382,11 @@ End Script
 ' @params curSplitIdx 当前段号
 ' @return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitTByIdx(t As Double, curSplitIdx As Long, Return Double)
-    If curSplitIdx <= 0 Or curSplitIdx > libCurver_timeStampSplitCnt - 1 Then
+    If curSplitIdx <= 0 Or curSplitIdx > libCurve_timeStampSplitCnt - 1 Then
         Return -1
     End If
 
-    t = t * libCurver_timeStampSplitCnt
+    t = t * libCurve_timeStampSplitCnt
     If t < curSplitIdx Or t - curSplitIdx > 1.000000001 Then
         Return -1
     End If
@@ -382,7 +399,7 @@ End Script
 ' @return 返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitTByStamp(timeStamp As Double, Return Double)
     timeStamp = CUTimeCalcT(timeStamp)
-    timeStamp = timeStamp * libCurver_timeStampSplitCnt
+    timeStamp = timeStamp * libCurve_timeStampSplitCnt
     Return timeStamp - Int(timeStamp)
 End Script
 
@@ -391,7 +408,7 @@ End Script
 ' @return 当前所处段号
 Export Script CUTimeCalcSplitIdxByStamp(timeStamp As Double, Return Long)
     timeStamp = CUTimeCalcT(timeStamp)
-    Return Int(timeStamp * libCurver_timeStampSplitCnt)
+    Return Int(timeStamp * libCurve_timeStampSplitCnt)
 End Script
 
 ' 计算已分段 t 参数 (t∈[0, 1])
@@ -400,11 +417,11 @@ End Script
 ' @return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitTByStampAndIdx(timeStamp As Double, curSplitIdx As Long, Return Double)
     timeStamp = CUTimeCalcT(timeStamp)
-    If curSplitIdx <= 0 Or curSplitIdx > libCurver_timeStampSplitCnt - 1 Then
+    If curSplitIdx <= 0 Or curSplitIdx > libCurve_timeStampSplitCnt - 1 Then
         Return -1
     End If
 
-    timeStamp = timeStamp * libCurver_timeStampSplitCnt
+    timeStamp = timeStamp * libCurve_timeStampSplitCnt
     If timeStamp < curSplitIdx Or timeStamp - curSplitIdx > 1.000000001 Then
         Return -1
     End If
@@ -644,16 +661,18 @@ End Script
 ' 计算反正切
 ' Return Atan(y / x)
 Export Script CUMath_Atan2(y As Double, x As Double, Return Double)
-    If x > 0 Then
+    If x >= MIN_FLOAT Then
         Return Atn(y / x)
-    ElseIf x < 0 And y >= 0 Then
+    ElseIf x <= -MIN_FLOAT And y >= 0 Then
         Return Atn(y / x) + PI
-    ElseIf x < 0 And y < 0 Then
+    ElseIf x <= -MIN_FLOAT And y < 0 Then
         Return Atn(y / x) - PI
-    ElseIf 0 = x And y > 0 Then
-        Return PI / 2
-    ElseIf 0 = x And y < 0 Then
-        Return -PI / 2
+    ElseIf MIN_FLOAT >= Abs(x) Then
+        If y > 0 Then
+            Return PI / 2
+        ElseIf y < 0 Then
+            Return -PI / 2
+        End If
     End If
     Return 0
 End Script
@@ -674,22 +693,22 @@ End Script
 ' 计算向量逆时针旋转
 ' angle 角度, 弧度制
 Export Script CUMath_VecRotate(a_x As Double, a_y As Double, angle As Double, Return Integer)
-    libCurver_retX = a_x * Cos(angle) + a_y * Sin(angle)
-    libCurver_retY = -a_x * Sin(angle) + a_y * Cos(angle)
-    Return libCurver_retX
+    libCurve_retX = a_x * Cos(angle) + a_y * Sin(angle)
+    libCurve_retY = -a_x * Sin(angle) + a_y * Cos(angle)
+    Return libCurve_retX
 End Script
 
 ' 计算向量归一化
 ' 返回值为 0 时表示向量长度为 0, 否则返回
 Export Script CUMath_VecNormal(a_x As Double, a_y As Double, Return Integer)
     If a_x = 0 And a_y = 0 Then
-        libCurver_retX = 0
-        libCurver_retY = 0
+        libCurve_retX = 0
+        libCurve_retY = 0
         Return 0
     End If
-    libCurver_retX = a_x / Sqr(a_x * a_x + a_y * a_y)
-    libCurver_retY = a_y / Sqr(a_x * a_x + a_y * a_y)
-    Return libCurver_retX
+    libCurve_retX = a_x / Sqr(a_x * a_x + a_y * a_y)
+    libCurve_retY = a_y / Sqr(a_x * a_x + a_y * a_y)
+    Return libCurve_retX
 End Script
 
 ' 向量模长
@@ -704,33 +723,33 @@ End Script
 
 ' 向量加法
 Export Script CUMath_VecAdd(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
-    libCurver_retX = a_x + b_x
-    libCurver_retY = a_y + b_y
-    Return libCurver_retX
+    libCurve_retX = a_x + b_x
+    libCurve_retY = a_y + b_y
+    Return libCurve_retX
 End Script
 
 ' 向量减法
 Export Script CUMath_VecSub(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
-    libCurver_retX = a_x - b_x
-    libCurver_retY = a_y - b_y
-    Return libCurver_retX
+    libCurve_retX = a_x - b_x
+    libCurve_retY = a_y - b_y
+    Return libCurve_retX
 End Script
 
 ' 向量数乘
 Export Script CUMath_VecMul(a_x As Double, a_y As Double, b As Double, Return Double)
-    libCurver_retX = a_x * b
-    libCurver_retY = a_y * b
-    Return libCurver_retX
+    libCurve_retX = a_x * b
+    libCurve_retY = a_y * b
+    Return libCurve_retX
 End Script
 
 ' 获取向量计算结果返回值 X
 Export Script CUMath_GetVecRetX(Return Double)
-    Return libCurver_retX
+    Return libCurve_retX
 End Script
 
 ' 获取向量计算结果返回值 Y
 Export Script CUMath_GetVecRetY(Return Double)
-    Return libCurver_retY
+    Return libCurve_retY
 End Script
 
 ' ----------------------- Math END
