@@ -8,4 +8,4 @@
 
 # 关于 .smt 文件
 
-安装 `./misc/teascript-for-smbx38a-0.0.8.vsix` 到 vscode, 并使用 vscode 打开 .smt 文件即可高亮/提示 teascript 脚本。
+安装 `./.misc/teascript-for-smbx38a-0.0.8.vsix` 到 vscode, 并使用 vscode 打开 .smt 文件即可高亮/提示 teascript 脚本。
