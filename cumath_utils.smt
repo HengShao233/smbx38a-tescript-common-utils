@@ -685,8 +685,11 @@ End Script
 ' 计算随机数
 ' @params seed 随机数种子
 ' @return 返回 [0, 1) 的随机数
-Export Script CUMath_Rnd(seed As Double, Return Double)
-    seed = Sin(seed * 12.9898) * 43758.5453
+Export Script CUMath_Hash(seed As Double, Return Double)
+    seed = seed * 0.1031
+    seed = seed - Int(seed)
+    seed = seed * (seed + 33.33)
+    seed = seed * (seed + seed)
     Return seed - Int(seed)
 End Script
 
