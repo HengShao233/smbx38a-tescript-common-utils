@@ -46,6 +46,8 @@ Dim libbmp_offsetAnimW As Long = 0
 Dim libbmp_offsetAnimH As Long = 0
 Dim libbmp_offsetAnimStartX As Long = 0
 Dim libbmp_offsetAnimStartY As Long = 0
+Dim libbmp_offsetAnimIntervalX As Long = 0
+Dim libbmp_offsetAnimIntervalY As Long = 0
 
 Dim libbmp_retX As Double = 0
 Dim libbmp_retY As Double = 0
@@ -248,6 +250,12 @@ Export Script BmpStoreAnimLoop(cnt As Long)
     libbmp_animLoopFrameCnt = cnt
 End Script
 
+' 设置动画每帧位置偏移
+Export Script BmpStoreAnimInterval(x As Long, y As Long)
+    libbmp_offsetAnimIntervalX = x
+    libbmp_offsetAnimIntervalY = y
+End Script
+
 ' 设置动画帧
 Export Script BmpAnim(id As Long, timeStamp As Long)
     If timeStamp < 0 Then
@@ -263,8 +271,8 @@ Export Script BmpAnim(id As Long, timeStamp As Long)
     libbmp_temp_i = timeStamp mod libbmp_animCeilX
     libbmp_temp_j = timeStamp \ libbmp_animCeilX
 
-    Bitmap(id).scrx = libbmp_animStartX + libbmp_temp_i * (libbmp_animW)
-    Bitmap(id).scry = libbmp_animStartY + libbmp_temp_j * (libbmp_animH)
+    Bitmap(id).scrx = libbmp_animStartX + libbmp_temp_i * libbmp_animW + libbmp_temp_i * libbmp_offsetAnimIntervalX
+    Bitmap(id).scry = libbmp_animStartY + libbmp_temp_j * libbmp_animH + libbmp_temp_j * libbmp_offsetAnimIntervalY
 End Script
 
 ' ===================================== 颜色
