@@ -601,12 +601,7 @@ Export Script CUMath_Avg(a As Double, b As Double, Return Double)
 End Script
 
 Export Script CUMath_SinLerp(a As Double, b As Double, theta As Double, Return Double)
-    theta = (Sin(theta) + 1) / 2
-    Return a * (1 - theta) + theta * b
-End Script
-
-Export Script CUMath_CosLerp(a As Double, b As Double, theta As Double, Return Double)
-    theta = (Sin(theta) + 1) / 2
+    theta = (Sin(theta * PI - 0.5 * PI) + 1) / 2
     Return a * (1 - theta) + theta * b
 End Script
 
@@ -646,6 +641,10 @@ Export Script CUMath_SmoothStep(a As Double, b As Double, vv As Double, Return D
     Else
         Return CUMath_Lerp(a, b, vv * vv * (3 - 2 * vv))
     End If
+End Script
+
+Export Script CUMath_Frac(a As Double, Return Double)
+    Return a - Int(a)
 End Script
 
 ' 计算点乘
