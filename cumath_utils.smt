@@ -615,6 +615,33 @@ Export Script CUMath_Min(a As Double, b As Double, Return Double)
     End If
 End Script
 
+' 计算平均值
+' @params a 数值 a
+' @params b 数值 b
+' @return 返回平均值
+Export Script CUMath_Avg(a As Double, b As Double, Return Double)
+    Return (a + b) / 2
+End Script
+
+' 线性插值
+' @params a 数值 a
+' @params b 数值 b
+' @params t 插值参数
+' @return 返回插值结果
+Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)
+    Return a * (1 - t) + t * b
+End Script
+
+' 计算正弦插值
+' @params a 数值 a
+' @params b 数值 b
+' @params theta 插值参数
+' @return 返回插值结果
+Export Script CUMath_SinLerp(a As Double, b As Double, theta As Double, Return Double)
+    theta = (Sin(theta * PI - 0.5 * PI) + 1) / 2
+    Return a * (1 - theta) + theta * b
+End Script
+
 ' 计算将数值限制在 0~1 之间
 ' @params a 数值 a
 ' @return 返回限制结果
@@ -640,6 +667,20 @@ Export Script CUMath_Remap01(f As Double, t As Double, vv As Double, Return Doub
     Return (vv - f) / (t - f)
 End Script
 
+' 用正弦函数将 theta 映射到 [0, 1]
+' @params theta 参数 theta
+' @return 返回映射结果
+Export Script CUMath_Sin01(theta As Double, Return Double)
+    Return (Sin(theta) + 1) / 2
+End Script
+
+' 用余弦函数将 theta 映射到 [0, 1]
+' @params theta 参数 theta
+' @return 返回映射结果
+Export Script CUMath_Cos01(theta As Double, Return Double)
+    Return (Cos(theta) + 1) / 2
+End Script
+
 ' 计算将数值限制在 [a, b] 之间
 ' @params a 数值 a
 ' @params b 数值 b
@@ -655,45 +696,19 @@ Export Script CUMath_Clamp(a As Double, b As Double, vv As Double, Return Double
     End If
 End Script
 
-' 计算平均值
+' 计算将数值平滑地限制在 [a, b] 之间
 ' @params a 数值 a
 ' @params b 数值 b
-' @return 返回平均值
-Export Script CUMath_Avg(a As Double, b As Double, Return Double)
-    Return (a + b) / 2
-End Script
-
-' 计算正弦插值
-' @params a 数值 a
-' @params b 数值 b
-' @params theta 插值参数
+' @params vv 插值参数
 ' @return 返回插值结果
-Export Script CUMath_SinLerp(a As Double, b As Double, theta As Double, Return Double)
-    theta = (Sin(theta * PI - 0.5 * PI) + 1) / 2
-    Return a * (1 - theta) + theta * b
-End Script
-
-' 用正弦函数将 theta 映射到 [0, 1]
-' @params theta 参数 theta
-' @return 返回映射结果
-Export Script CUMath_Sin01(theta As Double, Return Double)
-    Return (Sin(theta) + 1) / 2
-End Script
-
-' 用余弦函数将 theta 映射到 [0, 1]
-' @params theta 参数 theta
-' @return 返回映射结果
-Export Script CUMath_Cos01(theta As Double, Return Double)
-    Return (Cos(theta) + 1) / 2
-End Script
-
-' 线性插值
-' @params a 数值 a
-' @params b 数值 b
-' @params t 插值参数
-' @return 返回插值结果
-Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)
-    Return a * (1 - t) + t * b
+Export Script CUMath_SmoothClamp(a As Double, b As Double, vv As Double, Return Double)
+    If vv <= 0 Then
+        Return a
+    ElseIf vv >= 1 Then
+        Return b
+    Else
+        Return CUMath_Lerp(a, b, vv * vv * (3 - 2 * vv))
+    End If
 End Script
 
 ' 阶梯函数
@@ -718,21 +733,6 @@ Export Script CUMath_Select(a As Double, b As Double, vv As Double, Return Doubl
         Return a
     Else
         Return b
-    End If
-End Script
-
-' 平滑插值
-' @params a 数值 a
-' @params b 数值 b
-' @params vv 插值参数
-' @return 返回插值结果
-Export Script CUMath_SmoothStep(a As Double, b As Double, vv As Double, Return Double)
-    If vv <= 0 Then
-        Return a
-    ElseIf vv >= 1 Then
-        Return b
-    Else
-        Return CUMath_Lerp(a, b, vv * vv * (3 - 2 * vv))
     End If
 End Script
 
@@ -817,23 +817,24 @@ Export Script CUMath_SetIntBitPart(src As Long, from As Integer, len As Integer,
 End Script
 
 ' 计算点乘
-' a_x, a_y 向量 a 的 x, y 分量
-' b_x, b_y 向量 b 的 x, y 分量
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params b_x, b_y 向量 b 的 x, y 分量
 ' @return 返回点乘结果
 Export Script CUMath_Dot(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return a_x * b_x + a_y * b_y
 End Script
 
 ' 计算叉乘
-' a_x, a_y 向量 a 的 x, y 分量
-' b_x, b_y 向量 b 的 x, y 分量
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params b_x, b_y 向量 b 的 x, y 分量
 ' @return 返回叉乘结果
 Export Script CUMath_Cross(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return a_x * b_y - a_y * b_x
 End Script
 
 ' 计算反正切
-' Return Atan(y / x)
+' @params y, x 分量
+' @return Atan(y / x)
 Export Script CUMath_Atan2(y As Double, x As Double, Return Double)
     If x >= MIN_FLOAT Then
         Return Atn(y / x)
@@ -852,15 +853,17 @@ Export Script CUMath_Atan2(y As Double, x As Double, Return Double)
 End Script
 
 ' 计算俩向量的逆时针夹角
-' a_x, a_y 向量 a 的 x, y 分量
-' b_x, b_y 向量 b 的 x, y 分量
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params b_x, b_y 向量 b 的 x, y 分量
 ' @return 返回夹角, 范围为 (-PI, PI]
 Export Script CUMath_Angle(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return CUMath_Atan2(CUMath_Cross(a_x, a_y, b_x, b_y), CUMath_Dot(a_x, a_y, b_x, b_y))
 End Script
 
 ' 计算向量逆时针旋转
-' angle 角度, 弧度制
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params angle 角度, 弧度制
+' @return 通过 CUMath_GetVecRetX 和 CUMath_GetVecRetY 获取结果
 Export Script CUMath_VecRotate(a_x As Double, a_y As Double, angle As Double, Return Integer)
     libCurve_retX = a_x * Cos(angle) + a_y * Sin(angle)
     libCurve_retY = -a_x * Sin(angle) + a_y * Cos(angle)
@@ -868,7 +871,8 @@ Export Script CUMath_VecRotate(a_x As Double, a_y As Double, angle As Double, Re
 End Script
 
 ' 计算向量归一化
-' 返回值为 0 时表示向量长度为 0, 否则返回
+' @return 直接的返回值为 0 时表示向量长度为 0, 否则返回 1
+' @return 通过 CUMath_GetVecRetX 和 CUMath_GetVecRetY 获取结果
 Export Script CUMath_VecNormal(a_x As Double, a_y As Double, Return Integer)
     If a_x = 0 And a_y = 0 Then
         libCurve_retX = 0
@@ -878,20 +882,27 @@ Export Script CUMath_VecNormal(a_x As Double, a_y As Double, Return Integer)
     libCurve_tempA = Sqr(a_x * a_x + a_y * a_y)
     libCurve_retX = a_x / libCurve_tempA
     libCurve_retY = a_y / libCurve_tempA
-    Return libCurve_retX
+    Return 1
 End Script
 
 ' 向量模长
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @return 返回模长
 Export Script CUMath_VecLength(a_x As Double, a_y As Double, Return Double)
     Return Sqr(a_x * a_x + a_y * a_y)
 End Script
 
 ' 向量模长平方
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @return 返回模长平方
 Export Script CUMath_VecLength2(a_x As Double, a_y As Double, Return Double)
     Return a_x * a_x + a_y * a_y
 End Script
 
 ' 向量加法
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params b_x, b_y 向量 b 的 x, y 分量
+' @return 通过 CUMath_GetVecRetX 和 CUMath_GetVecRetY 获取结果
 Export Script CUMath_VecAdd(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     libCurve_retX = a_x + b_x
     libCurve_retY = a_y + b_y
@@ -899,6 +910,9 @@ Export Script CUMath_VecAdd(a_x As Double, a_y As Double, b_x As Double, b_y As 
 End Script
 
 ' 向量减法
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params b_x, b_y 向量 b 的 x, y 分量
+' @return 通过 CUMath_GetVecRetX 和 CUMath_GetVecRetY 获取结果
 Export Script CUMath_VecSub(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     libCurve_retX = a_x - b_x
     libCurve_retY = a_y - b_y
@@ -906,6 +920,9 @@ Export Script CUMath_VecSub(a_x As Double, a_y As Double, b_x As Double, b_y As 
 End Script
 
 ' 向量数乘
+' @params a_x, a_y 向量 a 的 x, y 分量
+' @params b 数值 b
+' @return 通过 CUMath_GetVecRetX 和 CUMath_GetVecRetY 获取结果
 Export Script CUMath_VecMul(a_x As Double, a_y As Double, b As Double, Return Double)
     libCurve_retX = a_x * b
     libCurve_retY = a_y * b
