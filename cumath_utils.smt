@@ -14,14 +14,17 @@ Dim MAX_FLOAT As Double = 3.402823466 * 10^38
 Dim MIN_FLOAT As Double = 1.40129846432482 * 10^-45
 Dim MAX_SAFE_DOUBLE As Double = 562949953421312
 
+' double 的最大安全整数
 Export Script CUMath_MAX_SAFE_INTEGER(Return Double)
     Return MAX_SAFE_DOUBLE
 End Script
 
+' double 的最大值
 Export Script CUMath_MAX_SAFE_FLOAT(Return Double)
     Return MAX_FLOAT
 End Script
 
+' double 的最小正值
 Export Script CUMath_MIN_SAFE_FLOAT(Return Double)
     Return MIN_FLOAT
 End Script
@@ -51,6 +54,8 @@ Dim libCurve_tempF As Double = 0           ' 临时变量 F
 Dim libCurve_tempG As Double = 0           ' 临时变量 G
 Dim libCurve_tempH As Long = 0             ' 临时变量 H
 Dim libCurve_tempI As Long = 0             ' 临时变量 I
+
+' 计算中间量
 Dim libCurve_t As Double = 0               ' t
 Dim libCurve_t2 As Double = 0              ' t^2
 Dim libCurve_t3 As Double = 0              ' t^3
@@ -61,13 +66,17 @@ Dim libCurve_timeStampSplitCnt As Long = 1 ' 时间戳分割
 Dim libCurve_timeStampStart As Double = 0  ' 时间戳
 Dim libCurve_timeStampEnd As Double = 0    ' 时间戳
 
-Dim libCurve_retX As Double = 0           ' 返回值 X
-Dim libCurve_retY As Double = 0             ' 返回值 Y
+' 向量运算结果返回值
+Dim libCurve_retX As Double = 0            ' 返回值 X
+Dim libCurve_retY As Double = 0            ' 返回值 Y
 
 ' ==================================================
 ' 设置各个控制点的参数
 
-' 设置 0 点
+' 设置控制点 0
+' params x x 坐标
+' params y y 坐标
+' return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP0(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p0_x) >= 0.01 Or Abs(y - libCurve_p0_y) >= 0.01 Then
         libCurve_bezier_lenght1 = -1
@@ -80,7 +89,10 @@ Export Script CUSetP0(x As Double, y As Double, Return Integer)
     Return 1
 End Script
 
-' 设置 1 点
+' 设置控制点 1
+' params x x 坐标
+' params y y 坐标
+' return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP1(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p1_x) >= 0.01 Or Abs(y - libCurve_p1_y) >= 0.01 Then
         libCurve_bezier_lenght1 = -1
@@ -93,7 +105,10 @@ Export Script CUSetP1(x As Double, y As Double, Return Integer)
     Return 1
 End Script
 
-' 设置 2 点
+' 设置控制点 2
+' params x x 坐标
+' params y y 坐标
+' return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP2(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p2_x) >= 0.01 Or Abs(y - libCurve_p2_y) >= 0.01 Then
         libCurve_bezier_lenght2 = -1
@@ -105,7 +120,10 @@ Export Script CUSetP2(x As Double, y As Double, Return Integer)
     Return 1
 End Script
 
-' 设置 3 点
+' 设置控制点 3
+' params x x 坐标
+' params y y 坐标
+' return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP3(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p3_x) >= 0.01 Or Abs(y - libCurve_p3_y) >= 0.01 Then
         libCurve_bezier_lenght3 = -1
@@ -160,36 +178,48 @@ End Script
 ' ----------------------- 计算贝塞尔曲线结果坐标 BEGIN
 
 ' 计算三次曲线 x 坐标
+' params t 曲线参数
+' return 计算结果
 Export Script CUCalcBezier3X(t As Double, Return Double)
     Call CUInner_SetT(t)
     Return CUInner_CalcBezier3(libCurve_p0_x, libCurve_p1_x, libCurve_p2_x, libCurve_p3_x)
 End Script
 
 ' 计算三次曲线 y 坐标
+' params t 曲线参数
+' return 计算结果
 Export Script CUCalcBezier3Y(t As Double, Return Double)
     Call CUInner_SetT(t)
     Return CUInner_CalcBezier3(libCurve_p0_y, libCurve_p1_y, libCurve_p2_y, libCurve_p3_y)
 End Script
 
 ' 计算二次曲线 x 坐标
+' params t 曲线参数
+' return 计算结果
 Export Script CUCalcBezier2X(t As Double, Return Double)
     Call CUInner_SetT(t)
     Return CUInner_CalcBezier2(libCurve_p0_x, libCurve_p1_x, libCurve_p2_x)
 End Script
 
 ' 计算二次曲线 y 坐标
+' params t 曲线参数
+' return 计算结果
 Export Script CUCalcBezier2Y(t As Double, Return Double)
     Call CUInner_SetT(t)
     Return CUInner_CalcBezier2(libCurve_p0_y, libCurve_p1_y, libCurve_p2_y)
 End Script
 
 ' 计算一次曲线 x 坐标
+' params t 曲线参数
+' return 计算结果
 Export Script CUCalcBezier1X(t As Double, Return Double)
     Call CUInner_SetT(t)
     Return CUInner_CalcBezier1(libCurve_p0_x, libCurve_p1_x)
 End Script
 
 ' 计算一次曲线 y 坐标
+' params t 曲线参数
+' return 计算结果
 Export Script CUCalcBezier1Y(t As Double, Return Double)
     Call CUInner_SetT(t)
     Return CUInner_CalcBezier1(libCurve_p0_y, libCurve_p1_y)
@@ -202,6 +232,7 @@ End Script
 ' ----------------------- 计算贝塞尔曲线长度 BEGIN
 
 ' 近似计算三阶贝塞尔曲线长度
+' return 计算结果
 Export Script CUCalcBezier3Len(Return Double)
     If libCurve_bezier_lenght3 > 0 Then
         Return libCurve_bezier_lenght3
@@ -224,6 +255,7 @@ Export Script CUCalcBezier3Len(Return Double)
 End Script
 
 ' 近似计算二阶贝塞尔曲线长度
+' return 计算结果
 Export Script CUCalcBezier2Len(Return Double)
     If libCurve_bezier_lenght2 > 0 Then
         Return libCurve_bezier_lenght2
@@ -246,6 +278,7 @@ Export Script CUCalcBezier2Len(Return Double)
 End Script
 
 ' 计算一阶贝塞尔曲线长度
+' return 计算结果
 Export Script CUCalcBezier1Len(Return Double)
     If libCurve_bezier_lenght1 > 0 Then
         Return libCurve_bezier_lenght1
@@ -322,8 +355,9 @@ End Script
 ' ----------------------- 时间工具集 BEGIN
 
 ' 设置时间戳端点
-' @params startTimeStamp 时间戳起点
-' @params endTimeStamp 时间戳终点
+' params startTimeStamp 时间戳起点
+' params endTimeStamp 时间戳终点
+' return 返回时间戳区间长度
 Export Script CUTimeSetStamp(startTimeStamp As Double, endTimeStamp As Double, Return Double)
     libCurve_timeStampEnd = endTimeStamp
     libCurve_timeStampStart = startTimeStamp
@@ -331,7 +365,8 @@ Export Script CUTimeSetStamp(startTimeStamp As Double, endTimeStamp As Double, R
 End Script
 
 ' 设置时间戳分割数
-' @params timeStampSplit 时间戳分割数
+' params timeStampSplit 时间戳分割数
+' return 返回实际分割数
 Export Script CUTimeSetSplit(timeStampSplit As Long, Return Long)
     If timeStampSplit <= 0 Then
         libCurve_timeStampSplitCnt = 1
@@ -342,8 +377,9 @@ Export Script CUTimeSetSplit(timeStampSplit As Long, Return Long)
 End Script
 
 ' 计算 t 参数
-' @params timeStamp 当前时间戳
-' @return t 参数
+' params timeStamp 当前时间戳
+' return t 参数
+' remark 若时间戳区间长度为 0 则直接返回 1
 Export Script CUTimeCalcT(timeStamp As Double, Return Double)
     If Abs(libCurve_timeStampEnd - libCurve_timeStampStart) < 0.000000001 Then
         Return 1
@@ -360,8 +396,8 @@ Export Script CUTimeCalcT(timeStamp As Double, Return Double)
 End Script
 
 ' 计算已分段的 t 参数
-' @params t 当前全局时间参数
-' @return 返回范围为 [0, 1] 的参数
+' params t 当前全局时间参数
+' return 返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitT(t As Double, Return Double)
     If t >= 1 Then
         Return 1
@@ -373,16 +409,16 @@ Export Script CUTimeCalcSplitT(t As Double, Return Double)
 End Script
 
 ' 计算当前所处段号
-' @params t 当前全局时间参数
-' @return 当前所处段号
+' params t 当前全局时间参数
+' return 当前所处段号
 Export Script CUTimeCalcSplitIdx(t As Double, Return Long)
     Return Int(t * libCurve_timeStampSplitCnt)
 End Script
 
 ' 计算已分段 t 参数 (t∈[0, 1])
-' @params t 当前全局时间参数
-' @params curSplitIdx 当前段号
-' @return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
+' params t 当前全局时间参数
+' params curSplitIdx 当前段号
+' return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitTByIdx(t As Double, curSplitIdx As Long, Return Double)
     If curSplitIdx <= 0 Or curSplitIdx > libCurve_timeStampSplitCnt - 1 Then
         Return -1
@@ -397,8 +433,8 @@ Export Script CUTimeCalcSplitTByIdx(t As Double, curSplitIdx As Long, Return Dou
 End Script
 
 ' 计算已分段的 t 参数
-' @params timeStamp 当前时间戳
-' @return 返回范围为 [0, 1] 的参数
+' params timeStamp 当前时间戳
+' return 返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitTByStamp(timeStamp As Double, Return Double)
     timeStamp = CUTimeCalcT(timeStamp)
     timeStamp = timeStamp * libCurve_timeStampSplitCnt
@@ -406,17 +442,17 @@ Export Script CUTimeCalcSplitTByStamp(timeStamp As Double, Return Double)
 End Script
 
 ' 计算当前所处段号
-' @params timeStamp 当前时间戳
-' @return 当前所处段号
+' params timeStamp 当前时间戳
+' return 当前所处段号
 Export Script CUTimeCalcSplitIdxByStamp(timeStamp As Double, Return Long)
     timeStamp = CUTimeCalcT(timeStamp)
     Return Int(timeStamp * libCurve_timeStampSplitCnt)
 End Script
 
 ' 计算已分段 t 参数 (t∈[0, 1])
-' @params timeStamp 当前时间戳
-' @params curSplitIdx 当前段号
-' @return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
+' params timeStamp 当前时间戳
+' params curSplitIdx 当前段号
+' return 若当前 t 不属于当前段号则返回 -1, 否则返回范围为 [0, 1] 的参数
 Export Script CUTimeCalcSplitTByStampAndIdx(timeStamp As Double, curSplitIdx As Long, Return Double)
     timeStamp = CUTimeCalcT(timeStamp)
     If curSplitIdx <= 0 Or curSplitIdx > libCurve_timeStampSplitCnt - 1 Then
@@ -555,6 +591,10 @@ End Script
 ' ------------------------------------
 ' ----------------------- Math END
 
+' 计算最大值
+' params a 数值 a
+' params b 数值 b
+' return 返回较大值
 Export Script CUMath_Max(a As Double, b As Double, Return Double)
     If a >= b Then
         Return a
@@ -563,6 +603,10 @@ Export Script CUMath_Max(a As Double, b As Double, Return Double)
     End If
 End Script
 
+' 计算最小值
+' params a 数值 a
+' params b 数值 b
+' return 返回较小值
 Export Script CUMath_Min(a As Double, b As Double, Return Double)
     If a <= b Then
         Return a
@@ -571,6 +615,9 @@ Export Script CUMath_Min(a As Double, b As Double, Return Double)
     End If
 End Script
 
+' 计算将数值限制在 0~1 之间
+' params a 数值 a
+' return 返回限制结果
 Export Script CUMath_Clamp01(a As Double, Return Double)
     If a < 0 Then
         Return 0
@@ -581,6 +628,11 @@ Export Script CUMath_Clamp01(a As Double, Return Double)
     End If
 End Script
 
+' 计算将数值从 [f, t] 映射到 [0, 1]
+' params f 数值 f
+' params t 数值 t
+' params 要映射的值
+' return 返回映射结果
 Export Script CUMath_Remap01(f As Double, t As Double, vv As Double, Return Double)
     If f = t Then
         Return vv
@@ -588,6 +640,11 @@ Export Script CUMath_Remap01(f As Double, t As Double, vv As Double, Return Doub
     Return (vv - f) / (t - f)
 End Script
 
+' 计算将数值限制在 [a, b] 之间
+' params a 数值 a
+' params b 数值 b
+' params 要限制的值
+' return 返回限制结果
 Export Script CUMath_Clamp(a As Double, b As Double, vv As Double, Return Double)
     If vv < a Then
         Return a
@@ -598,27 +655,51 @@ Export Script CUMath_Clamp(a As Double, b As Double, vv As Double, Return Double
     End If
 End Script
 
+' 计算平均值
+' params a 数值 a
+' params b 数值 b
+' return 返回平均值
 Export Script CUMath_Avg(a As Double, b As Double, Return Double)
     Return (a + b) / 2
 End Script
 
+' 计算正弦插值
+' params a 数值 a
+' params b 数值 b
+' params theta 插值参数
+' return 返回插值结果
 Export Script CUMath_SinLerp(a As Double, b As Double, theta As Double, Return Double)
     theta = (Sin(theta * PI - 0.5 * PI) + 1) / 2
     Return a * (1 - theta) + theta * b
 End Script
 
+' 用正弦函数将 theta 映射到 [0, 1]
+' params theta 参数 theta
+' return 返回映射结果
 Export Script CUMath_Sin01(theta As Double, Return Double)
     Return (Sin(theta) + 1) / 2
 End Script
 
+' 用余弦函数将 theta 映射到 [0, 1]
+' params theta 参数 theta
+' return 返回映射结果
 Export Script CUMath_Cos01(theta As Double, Return Double)
     Return (Cos(theta) + 1) / 2
 End Script
 
+' 线性插值
+' params a 数值 a
+' params b 数值 b
+' params t 插值参数
+' return 返回插值结果
 Export Script CUMath_Lerp(a As Double, b As Double, t As Double, Return Double)
     Return a * (1 - t) + t * b
 End Script
 
+' 阶梯函数
+' params a 数值 a
+' params b 数值 b
+' return 返回阶梯结果, 若 a < b 则返回 0, 否则返回 1
 Export Script CUMath_Step(a As Double, b As Double, Return Integer)
     If a < b Then
         Return 0
@@ -627,6 +708,11 @@ Export Script CUMath_Step(a As Double, b As Double, Return Integer)
     End If
 End Script
 
+' 条件选择
+' params a 数值 a
+' params b 数值 b
+' params vv 判定值
+' return 返回选择结果, 若 vv <= 0 则返回 a, 否则返回 b
 Export Script CUMath_Select(a As Double, b As Double, vv As Double, Return Double)
     If vv <= 0 Then
         Return a
@@ -635,6 +721,11 @@ Export Script CUMath_Select(a As Double, b As Double, vv As Double, Return Doubl
     End If
 End Script
 
+' 平滑插值
+' params a 数值 a
+' params b 数值 b
+' params vv 插值参数
+' return 返回插值结果
 Export Script CUMath_SmoothStep(a As Double, b As Double, vv As Double, Return Double)
     If vv <= 0 Then
         Return a
@@ -645,16 +736,98 @@ Export Script CUMath_SmoothStep(a As Double, b As Double, vv As Double, Return D
     End If
 End Script
 
+' 计算小数部分
+' params a 数值 a
+' return 返回小数部分
 Export Script CUMath_Frac(a As Double, Return Double)
     Return a - Int(a)
 End Script
 
+' 计算随机数
+' params seed 随机数种子
+' return 返回 [0, 1) 的随机数
+Export Script CUMath_Hash(seed As Double, Return Double)
+    seed = seed * 0.1031
+    seed = seed - Int(seed)
+    seed = seed * (seed + 33.33)
+    seed = seed * (seed + seed)
+    Return seed - Int(seed)
+End Script
+
+' 逻辑右移
+' params vv 要右移的整数
+' params cnt 右移位数
+' return 返回右移结果
+Export Script CUMath_LogicRsh(vv As Long, cnt As Integer, Return Long)
+    If cnt <= 0 Then
+        Return vv
+    ElseIf cnt >= 32 Then
+        Return 0
+    End If
+
+    libCurve_tempH = 2147483647
+    libCurve_tempI = 1073741824
+    libCurve_tempH = (libCurve_tempH >> cnt) Or (libCurve_tempI >> (cnt - 1))
+    Return (vv >> cnt) And libCurve_tempH
+End Script
+
+' 根据位置获取整数
+' params vv 要获取的整数
+' params from 起始位置 (0~31)
+' params len 获取长度 (1~32)
+' return 返回获取结果
+Export Script CUMath_GetIntBitPart(vv As Long, from As Integer, len As Integer, Return Long)
+    If len <= 0 Or from < 0 Or from > 32 Then
+        Return 0
+    End If
+    If len + from > 32 Then
+        len = 32 - from
+    End If
+    If len >= 32 Then
+        Return vv
+    End If
+
+    libCurve_tempH = 2147483647
+    libCurve_tempI = 1073741824
+    libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
+    Return (vv >> (32 - len - from)) And libCurve_tempH
+End Script
+
+' 设置整数的部分位
+' params src 原整数
+' params from 起始位置 (0~31)
+' params len 设置长度 (1~32)
+' params vv 要设置的整数
+' return 返回设置结果
+Export Script CUMath_SetIntBitPart(src As Long, from As Integer, len As Integer, vv As Long, Return Long)
+    If len <= 0 Or from < 0 Or from > 32 Then
+        Return src
+    End If
+    If len + from > 32 Then
+        len = 32 - from
+    End If
+    If len >= 32 Then
+        Return vv
+    End If
+
+    libCurve_tempH = 2147483647
+    libCurve_tempI = 1073741824
+    libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
+    Return (src And Not (libCurve_tempH << (32 - len - from))) Or ((vv And libCurve_tempH) << (32 - len - from))
+End Script
+
 ' 计算点乘
+' a_x, a_y 向量 a 的 x, y 分量
+' b_x, b_y 向量 b 的 x, y 分量
+' return 返回点乘结果
 Export Script CUMath_Dot(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return a_x * b_x + a_y * b_y
 End Script
 
 ' 计算叉乘
+' a_x, a_y 向量 a 的 x, y 分量
+' b_x, b_y 向量 b 的 x, y 分量
+' return 返回叉乘结果
 Export Script CUMath_Cross(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return a_x * b_y - a_y * b_x
 End Script
@@ -679,19 +852,11 @@ Export Script CUMath_Atan2(y As Double, x As Double, Return Double)
 End Script
 
 ' 计算俩向量的逆时针夹角
+' a_x, a_y 向量 a 的 x, y 分量
+' b_x, b_y 向量 b 的 x, y 分量
+' return 返回夹角, 范围为 (-PI, PI]
 Export Script CUMath_Angle(a_x As Double, a_y As Double, b_x As Double, b_y As Double, Return Double)
     Return CUMath_Atan2(CUMath_Cross(a_x, a_y, b_x, b_y), CUMath_Dot(a_x, a_y, b_x, b_y))
-End Script
-
-' 计算随机数
-' @params seed 随机数种子
-' @return 返回 [0, 1) 的随机数
-Export Script CUMath_Hash(seed As Double, Return Double)
-    seed = seed * 0.1031
-    seed = seed - Int(seed)
-    seed = seed * (seed + 33.33)
-    seed = seed * (seed + seed)
-    Return seed - Int(seed)
 End Script
 
 ' 计算向量逆时针旋转
@@ -745,56 +910,6 @@ Export Script CUMath_VecMul(a_x As Double, a_y As Double, b As Double, Return Do
     libCurve_retX = a_x * b
     libCurve_retY = a_y * b
     Return libCurve_retX
-End Script
-
-' 逻辑右移
-Export Script CUMath_LogicRsh(vv As Long, cnt As Integer, Return Long)
-    If cnt <= 0 Then
-        Return vv
-    ElseIf cnt >= 32 Then
-        Return 0
-    End If
-
-    libCurve_tempH = 2147483647
-    libCurve_tempI = 1073741824
-    libCurve_tempH = (libCurve_tempH >> cnt) Or (libCurve_tempI >> (cnt - 1))
-    Return (vv >> cnt) And libCurve_tempH
-End Script
-
-' 根据位置获取整数
-Export Script CUMath_GetIntBitPart(vv As Long, from As Integer, len As Integer, Return Long)
-    If len <= 0 Or from < 0 Or from > 32 Then
-        Return 0
-    End If
-    If len + from > 32 Then
-        len = 32 - from
-    End If
-    If len >= 32 Then
-        Return vv
-    End If
-
-    libCurve_tempH = 2147483647
-    libCurve_tempI = 1073741824
-    libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
-    Return (vv >> (32 - len - from)) And libCurve_tempH
-End Script
-
-' 设置整数的部分位
-Export Script CUMath_SetIntBitPart(src As Long, from As Integer, len As Integer, vv As Long, Return Long)
-    If len <= 0 Or from < 0 Or from > 32 Then
-        Return src
-    End If
-    If len + from > 32 Then
-        len = 32 - from
-    End If
-    If len >= 32 Then
-        Return vv
-    End If
-
-    libCurve_tempH = 2147483647
-    libCurve_tempI = 1073741824
-    libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
-    Return (src And Not (libCurve_tempH << (32 - len - from))) Or ((vv And libCurve_tempH) << (32 - len - from))
 End Script
 
 ' 获取向量计算结果返回值 X
