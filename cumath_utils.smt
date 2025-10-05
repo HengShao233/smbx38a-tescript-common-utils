@@ -49,7 +49,8 @@ Dim libCurve_tempD As Double = 0           ' 临时变量 D
 Dim libCurve_tempE As Double = 0           ' 临时变量 E
 Dim libCurve_tempF As Double = 0           ' 临时变量 F
 Dim libCurve_tempG As Double = 0           ' 临时变量 G
-Dim libCurve_tempH As Long = 0            ' 临时变量 H
+Dim libCurve_tempH As Long = 0             ' 临时变量 H
+Dim libCurve_tempI As Long = 0             ' 临时变量 I
 Dim libCurve_t As Double = 0               ' t
 Dim libCurve_t2 As Double = 0              ' t^2
 Dim libCurve_t3 As Double = 0              ' t^3
@@ -748,38 +749,41 @@ End Script
 
 ' 根据位置获取整数
 Export Script CUMath_GetIntBitPart(vv As Long, from As Integer, len As Integer, Return Long)
-    If len <= 0 Or from < 0 Or from > 31 Then
+    If len <= 0 Or from < 0 Or from > 32 Then
         Return 0
     End If
-    If len >= 31 Then
-        Return vv
+    If len + from > 32 Then
+        len = 32 - from
     End If
-    If len + from > 31 Then
-        len = 31 - from
+    If len >= 32 Then
+        Return vv
     End If
 
     libCurve_tempH = 2147483647
-    Return (vv >> (32 - len + from)) And (libCurve_tempH >> (32 - len))
+    libCurve_tempI = 1073741824
+    libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
+    Return (vv >> (32 - len - from)) And libCurve_tempH
 End Script
 
 ' 设置整数的部分位
 Export Script CUMath_SetIntBitPart(src As Long, from As Integer, len As Integer, vv As Long, Return Long)
-    If len <= 0 Or from < 0 Or from > 31 Then
+    If len <= 0 Or from < 0 Or from > 32 Then
         Return src
     End If
-    If len >= 31 Then
-        Return vv
+    If len + from > 32 Then
+        len = 32 - from
     End If
-    If len + from > 31 Then
-        len = 31 - from
+    If len >= 32 Then
+        Return vv
     End If
 
     libCurve_tempH = 2147483647
-    libCurve_tempH = libCurve_tempH >> (32 - len)
-    VV = VV And libCurve_tempH
-    VV = VV << (32 - len + from)
-    src = src And Not (libCurve_tempH << (32 - len + from))
-    Return src Or VV
+    libCurve_tempI = 1073741824
+    libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
+    vv = vv And libCurve_tempH
+    vv = vv << (32 - len - from)
+    src = src And Not (libCurve_tempH << (32 - len - from))
+    Return src Or vv
 End Script
 
 ' 获取向量计算结果返回值 X
