@@ -747,6 +747,20 @@ Export Script CUMath_VecMul(a_x As Double, a_y As Double, b As Double, Return Do
     Return libCurve_retX
 End Script
 
+' 逻辑右移
+Export Script CUMath_LogicRsh(vv As Long, cnt As Integer, Return Long)
+    If cnt <= 0 Then
+        Return vv
+    ElseIf cnt >= 32 Then
+        Return 0
+    End If
+
+    libCurve_tempH = 2147483647
+    libCurve_tempI = 1073741824
+    libCurve_tempH = (libCurve_tempH >> cnt) Or (libCurve_tempI >> (cnt - 1))
+    Return (vv >> cnt) And libCurve_tempH
+End Script
+
 ' 根据位置获取整数
 Export Script CUMath_GetIntBitPart(vv As Long, from As Integer, len As Integer, Return Long)
     If len <= 0 Or from < 0 Or from > 32 Then
@@ -780,10 +794,7 @@ Export Script CUMath_SetIntBitPart(src As Long, from As Integer, len As Integer,
     libCurve_tempH = 2147483647
     libCurve_tempI = 1073741824
     libCurve_tempH = (libCurve_tempH >> (32 - len)) Or (libCurve_tempI >> (31 - len))
-    vv = vv And libCurve_tempH
-    vv = vv << (32 - len - from)
-    src = src And Not (libCurve_tempH << (32 - len - from))
-    Return src Or vv
+    Return (src And Not (libCurve_tempH << (32 - len - from))) Or ((vv And libCurve_tempH) << (32 - len - from))
 End Script
 
 ' 获取向量计算结果返回值 X
