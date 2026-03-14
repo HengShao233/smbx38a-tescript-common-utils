@@ -40,9 +40,9 @@ Dim libCurve_p3_x As Double = 0
 Dim libCurve_p3_y As Double = 0
 
 ' 长度数据
-Dim libCurve_bezier_lenght3 As Double = -1
-Dim libCurve_bezier_lenght2 As Double = -1
-Dim libCurve_bezier_lenght1 As Double = -1
+Dim libCurve_bezier_length3 As Double = -1
+Dim libCurve_bezier_length2 As Double = -1
+Dim libCurve_bezier_length1 As Double = -1
 
 ' 临时变量
 Dim libCurve_tempA As Double = 0           ' 临时变量 A
@@ -54,6 +54,7 @@ Dim libCurve_tempF As Double = 0           ' 临时变量 F
 Dim libCurve_tempG As Double = 0           ' 临时变量 G
 Dim libCurve_tempH As Long = 0             ' 临时变量 H
 Dim libCurve_tempI As Long = 0             ' 临时变量 I
+Dim libCurve_tempJ As Long = 0             ' 临时变量 I
 
 ' 计算中间量
 Dim libCurve_t As Double = 0               ' t
@@ -79,9 +80,9 @@ Dim libCurve_retY As Double = 0            ' 返回值 Y
 ' @return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP0(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p0_x) >= 0.01 Or Abs(y - libCurve_p0_y) >= 0.01 Then
-        libCurve_bezier_lenght1 = -1
-        libCurve_bezier_lenght2 = -1
-        libCurve_bezier_lenght3 = -1
+        libCurve_bezier_length1 = -1
+        libCurve_bezier_length2 = -1
+        libCurve_bezier_length3 = -1
         libCurve_p0_x = x
         libCurve_p0_y = y
         Return 0
@@ -95,9 +96,9 @@ End Script
 ' @return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP1(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p1_x) >= 0.01 Or Abs(y - libCurve_p1_y) >= 0.01 Then
-        libCurve_bezier_lenght1 = -1
-        libCurve_bezier_lenght2 = -1
-        libCurve_bezier_lenght3 = -1
+        libCurve_bezier_length1 = -1
+        libCurve_bezier_length2 = -1
+        libCurve_bezier_length3 = -1
         libCurve_p1_x = x
         libCurve_p1_y = y
         Return 0
@@ -111,8 +112,8 @@ End Script
 ' @return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP2(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p2_x) >= 0.01 Or Abs(y - libCurve_p2_y) >= 0.01 Then
-        libCurve_bezier_lenght2 = -1
-        libCurve_bezier_lenght3 = -1
+        libCurve_bezier_length2 = -1
+        libCurve_bezier_length3 = -1
         libCurve_p2_x = x
         libCurve_p2_y = y
         Return 0
@@ -126,7 +127,7 @@ End Script
 ' @return 若点位置有变化则返回 0, 否则返回 1
 Export Script CUSetP3(x As Double, y As Double, Return Integer)
     If Abs(x - libCurve_p3_x) >= 0.01 Or Abs(y - libCurve_p3_y) >= 0.01 Then
-        libCurve_bezier_lenght3 = -1
+        libCurve_bezier_length3 = -1
         libCurve_p3_x = x
         libCurve_p3_y = y
         Return 0
@@ -234,8 +235,8 @@ End Script
 ' 近似计算三阶贝塞尔曲线长度
 ' @return 计算结果
 Export Script CUCalcBezier3Len(Return Double)
-    If libCurve_bezier_lenght3 > 0 Then
-        Return libCurve_bezier_lenght3
+    If libCurve_bezier_length3 > 0 Then
+        Return libCurve_bezier_length3
     End If
 
     libCurve_tempB = 0
@@ -250,15 +251,15 @@ Export Script CUCalcBezier3Len(Return Double)
         libCurve_tempD = libCurve_tempF
         libCurve_tempE = libCurve_tempG
     Next
-    libCurve_bezier_lenght3 = libCurve_tempB
-    Return libCurve_bezier_lenght3
+    libCurve_bezier_length3 = libCurve_tempB
+    Return libCurve_bezier_length3
 End Script
 
 ' 近似计算二阶贝塞尔曲线长度
 ' @return 计算结果
 Export Script CUCalcBezier2Len(Return Double)
-    If libCurve_bezier_lenght2 > 0 Then
-        Return libCurve_bezier_lenght2
+    If libCurve_bezier_length2 > 0 Then
+        Return libCurve_bezier_length2
     End If
 
     libCurve_tempB = 0
@@ -273,19 +274,19 @@ Export Script CUCalcBezier2Len(Return Double)
         libCurve_tempD = libCurve_tempF
         libCurve_tempE = libCurve_tempG
     Next
-    libCurve_bezier_lenght2 = libCurve_tempB
-    Return libCurve_bezier_lenght2
+    libCurve_bezier_length2 = libCurve_tempB
+    Return libCurve_bezier_length2
 End Script
 
 ' 计算一阶贝塞尔曲线长度
 ' @return 计算结果
 Export Script CUCalcBezier1Len(Return Double)
-    If libCurve_bezier_lenght1 > 0 Then
-        Return libCurve_bezier_lenght1
+    If libCurve_bezier_length1 > 0 Then
+        Return libCurve_bezier_length1
     End If
 
-    libCurve_bezier_lenght1 = CUInner_CalcDistancePP(libCurve_p0_x, libCurve_p0_y, libCurve_p1_x, libCurve_p1_y)
-    Return libCurve_bezier_lenght1
+    libCurve_bezier_length1 = CUInner_CalcDistancePP(libCurve_p0_x, libCurve_p0_y, libCurve_p1_x, libCurve_p1_y)
+    Return libCurve_bezier_length1
 End Script
 
 ' ----------------------- 计算贝塞尔曲线长度 END
@@ -927,6 +928,145 @@ Export Script CUMath_VecMul(a_x As Double, a_y As Double, b As Double, Return Do
     libCurve_retX = a_x * b
     libCurve_retY = a_y * b
     Return libCurve_retX
+End Script
+
+' 简单幂运算
+' @param x 基数
+' @param pow 指数 (> 0)
+Export Script CUMath_SimplePow(x As Long, pow As Integer, Return Long)
+    If pow <= 0 Then
+        Return 1
+    End If
+
+    libCurve_tempI = 1
+    Do While pow <> 0
+        If (pow And 1) = 1 Then
+            libCurve_tempI = libCurve_tempI * x
+        End If
+        x = x * x
+        pow = pow >> 1
+    Loop
+    Return libCurve_tempI
+End Script
+
+' 字符转码 (92 进制)
+' @param c 字符 " !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{|}~"
+Export Script CUMath_Char92Code(c As Integer, Return Integer)
+    If c < 32 Or c > 126 Then
+        Return -1 ' invalid
+    End If
+
+    If c > 96 Then ' 扣除反引号
+        c -= 1
+    End If
+    If c > 92 Then ' 扣除反斜杠
+        c -= 1
+    End If
+    If c > 34 Then ' 扣除引号
+        c -= 1
+    End If
+    Return c - 32
+End Script
+
+' 字符转码 (64 进制)
+' @param c 字符 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$"
+Export Script CUMath_Char64Code(c As Integer, Return Integer)
+    If c >= 48 And c <= 57 Then
+        Return c - 48 ' 数字, 0-9
+    ElseIf c >= 65 And c <= 90 Then
+        Return c - 65 + 10 ' 大写字母, A-Z: 10-35
+    ElseIf c >= 97 And c <= 122 Then
+        Return c - 97 + 36 ' 小写字母, a-z: 36-61
+    ElseIf 35 = c Then
+        Return 62 ' #
+    ElseIf 36 = c Then
+        Return 63 ' $
+    End If
+    Return -1 ' invalid
+End Script
+
+' 字符转码 (36 进制, 兼容 16 进制)
+' @param c 字符 "0-9A-Z" 或 "0-9a-z"
+Export Script CUMath_Char36Code(c As Integer, Return Integer)
+    If c >= 48 And c <= 57 Then
+        Return c - 48 ' 数字, 0-9
+    ElseIf c >= 65 And c <= 90 Then
+        Return c - 65 + 10 ' 大写字母, A-Z: 10-35
+    ElseIf c >= 97 And c <= 122 Then
+        Return c - 97 + 10 ' 小写字母, a-z: 10-35
+    End If
+    Return -1 ' invalid
+End Script
+
+' 字符串转码 (2-92进制)
+' @param s 字符串
+' @param start 开始位置
+' @param length 长度
+' @param base 进制
+Export Script CUMath_Decode(s As String, start As Integer, length As Integer, base As Integer, Return Long)
+    If start < 1 Then
+        start = 1
+    End If
+    If start + length - 1 > Len(s) Then
+        length = Len(s) - start + 1
+    End If
+    If length <= 0 Then
+        Return -1
+    End If
+    If base < 2 Or base > 92 Then
+        Return -1
+    End If
+
+    start = start - 1
+    libCurve_tempJ = 0
+    If base <= 36 Then
+        For libCurve_tempH = 1 To length Step 1
+            libCurve_tempJ += CUMath_Char36Code(Asc(Mid(s, start + libCurve_tempH, 1))) * CUMath_SimplePow(base, length - libCurve_tempH)
+        Next
+    ElseIf base <= 64 Then
+        For libCurve_tempH = 0 To length Step 1
+            libCurve_tempJ += CUMath_Char64Code(Asc(Mid(s, start + libCurve_tempH, 1))) * CUMath_SimplePow(base, length - libCurve_tempH)
+        Next
+    ElseIf base <= 92 Then
+        For libCurve_tempH = 0 To length Step 1
+            libCurve_tempJ += CUMath_Char92Code(Asc(Mid(s, start + libCurve_tempH, 1))) * CUMath_SimplePow(base, length - libCurve_tempH)
+        Next
+    End If
+    Return libCurve_tempJ
+End Script
+
+' 转换为无符号整数
+' @param a 整数
+' @return long 整数
+Export Script CUMath_UInt16(a As Integer, Return Long)
+    Return a And 65535
+End Script
+
+' 转换为有符号整数
+' @param a 整数
+' @return long 整数
+Export Script CUMath_Int16(a As Long, Return Integer)
+    Return a And 65535
+End Script
+
+' 拼接两个整数
+' @param a 整数
+' @param b 整数
+' @return long 整数
+Export Script CUMath_AssembleInt(a As Integer, b As Integer, Return Long)
+    libCurve_tempH = a And 65535
+    libCurve_tempJ = b And 65535
+    Return libCurve_tempJ or (libCurve_tempH << 16)
+End Script
+
+' 拆解整数
+' @param value 整数
+' @return 通过 CUMath_GetVecRetX 和 CUMath_GetVecRetY 获取结果
+Export Script CUMath_DisassembleInt(value As Long)
+    libCurve_tempH = (value >> 16) and 65535
+    libCurve_tempJ = value And 65535
+    libCurve_retX = libCurve_tempH
+    libCurve_retY = libCurve_tempJ
 End Script
 
 ' 获取向量计算结果返回值 X
