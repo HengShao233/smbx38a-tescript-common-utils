@@ -95,7 +95,7 @@ End Script
 ' BMP 创建: 贮存 bmp 缩放
 ' @params w 目标宽度
 ' @params h 目标高度
-Export Script BmpNewStoreScale(w As Long, h As Long)
+Export Script BmpNewStoreScale(w As Double, h As Double)
     libbmp_scaleW = w
     libbmp_scaleH = h
 End Script
