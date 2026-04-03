@@ -978,9 +978,9 @@ Export Script CUMath_Char64Code(c As Integer, Return Integer)
         Return c - 65 + 10 ' 大写字母, A-Z: 10-35
     ElseIf c >= 97 And c <= 122 Then
         Return c - 97 + 36 ' 小写字母, a-z: 36-61
-    ElseIf 35 = c Then
+    ElseIf c = 35 Then
         Return 62 ' #
-    ElseIf 36 = c Then
+    ElseIf c = 36 Then
         Return 63 ' $
     End If
     Return -1 ' invalid
