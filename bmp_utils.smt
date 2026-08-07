@@ -64,16 +64,16 @@ Dim libbmp_temp_o As Double = 0
 ' ===================================== 创建 bmp
 
 ' BMP 创建: 贮存 srcId
-' @params srcId 资源 id
+' - @params srcId 资源 id
 Export Script BmpNewStoreSrcId(srcId As Long)
     libbmp_srcId = srcId
 End Script
 
 ' BMP 创建: 贮存 src 采样偏移和大小
-' @params x 采样起始 x 坐标
-' @params y 采样起始 y 坐标
-' @params w 采样宽度
-' @params h 采样高度
+' - @params x 采样起始 x 坐标
+' - @params y 采样起始 y 坐标
+' - @params w 采样宽度
+' - @params h 采样高度
 Export Script BmpNewStoreSrcOffset(x As Long, y As Long, w As Long, h As Long)
     libbmp_sx = x
     libbmp_sy = y
@@ -82,46 +82,46 @@ Export Script BmpNewStoreSrcOffset(x As Long, y As Long, w As Long, h As Long)
 End Script
 
 ' BMP 创建: 贮存 src 信息
-' @params srcId 资源 id
-' @params x 采样起始 x 坐标
-' @params y 采样起始 y 坐标
-' @params w 采样宽度
-' @params h 采样高度
+' - @params srcId 资源 id
+' - @params x 采样起始 x 坐标
+' - @params y 采样起始 y 坐标
+' - @params w 采样宽度
+' - @params h 采样高度
 Export Script BmpNewStoreSrc(srcId As Long, x As Long, y As Long, w As Long, h As Long)
     Call BmpNewStoreSrcId(srcId)
     Call BmpNewStoreSrcOffset(x, y, w, h)
 End Script
 
 ' BMP 创建: 贮存 bmp 缩放
-' @params w 目标宽度
-' @params h 目标高度
+' - @params w 目标宽度
+' - @params h 目标高度
 Export Script BmpNewStoreScale(w As Double, h As Double)
     libbmp_scaleW = w
     libbmp_scaleH = h
 End Script
 
 ' BMP 创建: 贮存 bmp 是否使用屏幕坐标
-' @params isUse 1 使用屏幕坐标, 0 使用世界坐标
+' - @params isUse 1 使用屏幕坐标, 0 使用世界坐标
 Export Script BmpNewStoreIsUseScreenCoords(isUse As Byte)
     libbmp_isUseScreenCoord = isUse
 End Script
 
 ' BMP 创建: 贮存 bmp 位置
-' @params x 目标 x 坐标
-' @params y 目标 y 坐标
+' - @params x 目标 x 坐标
+' - @params y 目标 y 坐标
 Export Script BmpNewStorePos(x As Long, y As Long)
     libbmp_destX = x
     libbmp_destY = y
 End Script
 
 ' BMP 创建: 创建 bmp
-' @params id bmp id
+' - @params id bmp id
 Export Script BmpNew(id As Long)
     Call BMPCreate(id, libbmp_srcId, libbmp_isUseScreenCoord, 1, libbmp_sx, libbmp_sy, libbmp_sw, libbmp_sh, libbmp_destX, libbmp_destY, libbmp_scaleW, libbmp_scaleH, 0, 0, 0, -1)
 End Script
 
 ' BMP 创建: 销毁 bmp
-' @params id bmp id
+' - @params id bmp id
 Export Script BmpDel(id As Long)
     Call BErase(2, id)
 End Script
@@ -146,8 +146,8 @@ Script BmpInner_RotateReset(id As Long, Return Integer)
 End Script
 
 ' BMP 变换: 贮存相对锚点
-' @params x 锚点 x 坐标, 0~1
-' @params y 锚点 y 坐标, 0~1
+' - @params x 锚点 x 坐标, 0~1
+' - @params y 锚点 y 坐标, 0~1
 Export Script BmpStoreAnchor(x As Double, y As Double)
     libbmp_anchorX = x
     libbmp_anchorY = y
@@ -168,8 +168,8 @@ Export Script BmpPos(id As Long, x As Long, y As Long)
 End Script
 
 ' BMP 变换: 获取位置
-' @params id bmp id
-' @return 返回 x 坐标
+' - @params id bmp id
+' - @return 返回 x 坐标
 Export Script BmpGetPos(id As Long, Return Integer)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
         libbmp_temp_m = Bitmap(id).rotatang
@@ -196,8 +196,8 @@ Export Script BmpGetPos(id As Long, Return Integer)
 End Script
 
 ' BMP 变换: 设置旋转
-' @params id bmp id
-' @return 返回转角
+' - @params id bmp id
+' - @return 返回转角
 Export Script BmpRotate(id As Long, angle As Double)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
         Call BmpInner_RotateReset(id)
@@ -213,9 +213,9 @@ Export Script BmpRotate(id As Long, angle As Double)
 End Script
 
 ' BMP 变换: 设置缩放
-' @params id bmp id
-' @params scaleX x 轴缩放比例
-' @params scaleY y 轴缩放比例
+' - @params id bmp id
+' - @params scaleX x 轴缩放比例
+' - @params scaleY y 轴缩放比例
 Export Script BmpScale(id As Long, scaleX As Double, scaleY As Double)
     If (Abs(libbmp_anchorX) > 0.0001 Or Abs(libbmp_anchorY) > 0.0001) And Bitmap(id).scrwidth > 0 And Bitmap(id).scrheight > 0 Then
         libbmp_temp_n = Bitmap(id).rotatang
@@ -234,9 +234,9 @@ Export Script BmpScale(id As Long, scaleX As Double, scaleY As Double)
 End Script
 
 ' BMP 变换: 获取缩放
-' @params id bmp id
-' @return 返回 x 轴缩放比例
-' @return 返回 y 轴缩放比例
+' - @params id bmp id
+' - @return 返回 x 轴缩放比例
+' - @return 返回 y 轴缩放比例
 Export Script BmpGetScale(id As Long, Return Integer)
     libbmp_retX = Bitmap(id).scalex
     libbmp_retY = Bitmap(id).scaley
@@ -244,20 +244,20 @@ Export Script BmpGetScale(id As Long, Return Integer)
 End Script
 
 ' BMP 变换: 获取旋转
-' @params id bmp id
-' @return 返回转角
+' - @params id bmp id
+' - @return 返回转角
 Export Script BmpGetRotate(id As Long, Return Double)
     Return Bitmap(id).rotatang
 End Script
 
 ' BMP 变换: 获取计算结果 x 坐标
-' @return 返回 x 坐标
+' - @return 返回 x 坐标
 Export Script BmpGetRetX(Return Double)
     Return libbmp_retX
 End Script
 
 ' BMP 变换: 获取计算结果 y 坐标
-' @return 返回 y 坐标
+' - @return 返回 y 坐标
 Export Script BmpGetRetY(Return Double)
     Return libbmp_retY
 End Script
@@ -266,10 +266,10 @@ End Script
 
 ' BMP 帧动画: 贮存动画序列帧的起始位置
 ' 可以直接参考 BmpNewStoreSrc 的后四个参数
-' @params startX 起始 x 坐标
-' @params startY 起始 y 坐标
-' @params w 每帧宽度
-' @params h 每帧高度
+' - @params startX 起始 x 坐标
+' - @params startY 起始 y 坐标
+' - @params w 每帧宽度
+' - @params h 每帧高度
 Export Script BmpStoreAnimPos(startX As Long, startY As Long, w As Long, h As Long)
     libbmp_animW = w
     libbmp_animH = h
@@ -278,30 +278,30 @@ Export Script BmpStoreAnimPos(startX As Long, startY As Long, w As Long, h As Lo
 End Script
 
 ' BMP 帧动画: 贮存动画序列帧的数量和横轴数量
-' @params cnt 帧总数量
-' @params cellCntX 横轴帧数量
+' - @params cnt 帧总数量
+' - @params cellCntX 横轴帧数量
 Export Script BmpStoreAnimInfo(cnt As Long, cellCntX As Long)
     libbmp_animCnt = cnt
     libbmp_animCeilX = cellCntX
 End Script
 
 ' BMP 帧动画: 贮存动画帧尾循环
-' @params cnt 循环帧数量, <=0 表示永远循环
+' - @params cnt 循环帧数量, <=0 表示永远循环
 Export Script BmpStoreAnimLoop(cnt As Long)
     libbmp_animLoopFrameCnt = cnt
 End Script
 
 ' BMP 帧动画: 贮存动画每帧位置偏移
-' @params x 每帧 x 轴偏移
-' @params y 每帧 y 轴偏移
+' - @params x 每帧 x 轴偏移
+' - @params y 每帧 y 轴偏移
 Export Script BmpStoreAnimInterval(x As Long, y As Long)
     libbmp_offsetAnimIntervalX = x
     libbmp_offsetAnimIntervalY = y
 End Script
 
 ' BMP 帧动画: 应用动画帧
-' @params id bmp id
-' @params timeStamp 帧时间戳, 从 0 开始, 可以大于总帧数, 也可以小于 0
+' - @params id bmp id
+' - @params timeStamp 帧时间戳, 从 0 开始, 可以大于总帧数, 也可以小于 0
 Export Script BmpAnim(id As Long, timeStamp As Long)
     If timeStamp < 0 Then
         timeStamp = -timeStamp
@@ -341,40 +341,40 @@ Export Script BmpStoreCol2(r As Integer, g As Integer, b As Integer, a As Intege
 End Script
 
 ' BMP 颜色: 颜色插值, 在槽位 1 和槽位 2 之间插值
-' @params t 插值参数, 0 ~ 1
-' @return 返回插值后的颜色值
+' - @params t 插值参数, 0 ~ 1
+' - @return 返回插值后的颜色值
 Export Script BmpLerpCol(t As Double, Return Double)
     Return rgba(((1 - t) * libbmp_col_r1 + t * libbmp_col_r2), ((1 - t) * libbmp_col_g1 + t * libbmp_col_g2), ((1 - t) * libbmp_col_b1 + t * libbmp_col_b2), ((1 - t) * libbmp_col_a1 + t * libbmp_col_a2))
 End Script
 
 ' BMP 颜色: 设置 bmp 颜色
-' @params id bmp id
+' - @params id bmp id
 ' rgba 范围 0 ~ 255
 Export Script BmpCol(id As Long, r As Integer, g As Integer, b As Integer, a As Integer)
     Bitmap(id).forecolor = rgba(r, g, b, a)
 End Script
 
 ' BMP 颜色: 设置槽位 1 中贮存的颜色到 bmp
-' @params id bmp id
+' - @params id bmp id
 Export Script BmpCol1(id As Long)
     Bitmap(id).forecolor = rgba(libbmp_col_r1, libbmp_col_g1, libbmp_col_b1, libbmp_col_a1)
 End Script
 
 ' BMP 颜色: 设置槽位 2 中贮存的颜色到 bmp
-' @params id bmp id
+' - @params id bmp id
 Export Script BmpCol2(id As Long)
     Bitmap(id).forecolor = rgba(libbmp_col_r2, libbmp_col_g2, libbmp_col_b2, libbmp_col_a2)
 End Script
 
 ' BMP 颜色: 设置槽位 1 和槽位 2 中贮存的颜色插值到 bmp
-' @params id bmp id
+' - @params id bmp id
 Export Script BmpColLerp(id As Long, t As Double)
     Bitmap(id).forecolor = rgba(((1 - t) * libbmp_col_r1 + t * libbmp_col_r2), ((1 - t) * libbmp_col_g1 + t * libbmp_col_g2), ((1 - t) * libbmp_col_b1 + t * libbmp_col_b2), ((1 - t) * libbmp_col_a1 + t * libbmp_col_a2))
 End Script
 
 ' BMP 颜色: 设置 bmp alpha 值
-' @params id bmp id
-' @params a alpha 值, 0 ~ 1
+' - @params id bmp id
+' - @params a alpha 值, 0 ~ 1
 Export Script BmpAlpha(id As Long, a As Double)
     Bitmap(id).forecolor_a = a * 255
 End Script
@@ -382,10 +382,10 @@ End Script
 ' ===================================== 偏移动画
 
 ' BMP 偏移动画: 贮存偏移动画信息
-' @params x 起始 x 坐标
-' @params y 起始 y 坐标
-' @params w 结束 x 坐标
-' @params h 结束 y 坐标
+' - @params x 起始 x 坐标
+' - @params y 起始 y 坐标
+' - @params w 结束 x 坐标
+' - @params h 结束 y 坐标
 Export Script BmpStoreOffsetAnimInfo(x As Long, y As Long, w As Long, h As Long)
     libbmp_offsetAnimStartX = x
     libbmp_offsetAnimStartY = y
@@ -394,8 +394,8 @@ Export Script BmpStoreOffsetAnimInfo(x As Long, y As Long, w As Long, h As Long)
 End Script
 
 ' BMP 偏移动画: 应用偏移动画
-' @params id bmp id
-' @params t 插值参数, 0 ~ 1
+' - @params id bmp id
+' - @params t 插值参数, 0 ~ 1
 Export Script BmpOffsetAnim(id As Long, t As Double)
     t = t - Int(t)
     Bitmap(id).scrx = (1 - t) * libbmp_offsetAnimStartX + t * libbmp_offsetAnimW

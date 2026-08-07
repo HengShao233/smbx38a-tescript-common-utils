@@ -154,8 +154,8 @@ Call libLine_resetLibLine()
 
 ' 设置线的标签字段
 ' 使用了 tempVal
-' @param lineId 线 id
-' @param value 要设置的值
+' - @param lineId 线 id
+' - @param value 要设置的值
 Script p_libLine_setFlag(lineId As Long, value As Double)
     tempVal = Array(libLineList(Array(libLineList(lineId + lineStartIdx)) + bmpStartIdx))
     Array(libLineList(Array(libLineList(lineId + lineStartIdx)) + bmpStartIdx)) = value
@@ -166,16 +166,16 @@ Script p_libLine_setFlag(lineId As Long, value As Double)
 End Script
 
 ' 获取线的标签字段 (1-脏数据 0-非脏数据)
-' @param lineId 线 id
-' @return 线的标签字段值
+' - @param lineId 线 id
+' - @return 线的标签字段值
 Script p_libLine_getFlag(lineId As Long, Return Double)
     Return Array(libLineList(Array(libLineList(lineId + lineStartIdx)) + bmpStartIdx))
 End Script
 
 ' 交换顶点
 ' 使用了 tempVal
-' @param a 顶点 id
-' @param b 顶点 id
+' - @param a 顶点 id
+' - @param b 顶点 id
 Script p_libLine_swapPoint(a As Long, b As Long)
     tempVal = Array(libLineList(b))
     Array(libLineList(b)) = Array(libLineList(a))
@@ -192,8 +192,8 @@ End Script
 
 ' 交换顶点 不交换 bitmap
 ' 使用了 tempVal
-' @param a 顶点 id
-' @param b 顶点 id
+' - @param a 顶点 id
+' - @param b 顶点 id
 Script p_libLine_swapPointWithoutBmp(a As Long, b As Long)
     tempVal = Array(libLineList(b))
     Array(libLineList(b)) = Array(libLineList(a))
@@ -212,7 +212,7 @@ End Script
 ' ==================================================================== bmp 操作
 
 ' 申请一条 bitmap
-' @return bitmap id or -1
+' - @return bitmap id or -1
 Script p_libLine_allocateBmp(Return Long)
     If inited = 0 Or freeBmpCount <= 0 Then
         Return -1
@@ -235,8 +235,8 @@ Script p_libLine_allocateBmp(Return Long)
 End Script
 
 ' 释放 bitmap
-' @param id bitmap id
-' @return bitmap 1 or -1
+' - @param id bitmap id
+' - @return bitmap 1 or -1
 Script p_libLine_releaseBmp(id As Long, Return Long)
     If inited = 0 Or id < bitmapStartIdx Or id >= bitmapStartIdx + maxVertCount Then
         Return -1
@@ -253,8 +253,8 @@ End Script
 ' ----------------------------------- 申请
 
 ' 申请一条线
-' @param vertCount 顶点数
-' @return 线 id, 返回值小于零时申请失败
+' - @param vertCount 顶点数
+' - @return 线 id, 返回值小于零时申请失败
 Export Script libLine_allocateLine(vertCount As Long, Return Long)
     If inited = 0 Then
         Return -1
@@ -308,7 +308,7 @@ End Script
 
 ' 释放一条线
 ' 使用了 tempInt tempInt2
-' @param lineId 线 id
+' - @param lineId 线 id
 Export Script libLine_releaseLine(lineId As Long, Return Long)
     If inited = 0 Then
         Return 0
@@ -354,7 +354,7 @@ End Script
 ' 设置 alpha 值 value 范围是 [-1, 1]
 ' 使用了 disA
 ' 当 value < 0 时表示收到 loss 的影响
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setAlpha(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -377,7 +377,7 @@ Export Script libLine_setAlpha(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 npc 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setNpc(lineId As Long, value As Long, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -393,7 +393,7 @@ Export Script libLine_setNpc(lineId As Long, value As Long, Return Long)
 End Script
 
 ' 设置 step 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setStep(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -409,7 +409,7 @@ Export Script libLine_setStep(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 color 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setColor(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -425,7 +425,7 @@ Export Script libLine_setColor(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 width 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setWidth(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -441,7 +441,7 @@ Export Script libLine_setWidth(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 srcWidth 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setSrcWidth(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -457,7 +457,7 @@ Export Script libLine_setSrcWidth(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 segmentScale 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setSegmentScale(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -473,7 +473,7 @@ Export Script libLine_setSegmentScale(lineId As Long, value As Double, Return Lo
 End Script
 
 ' 设置 zpos 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setZpos(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -489,7 +489,7 @@ Export Script libLine_setZpos(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 loss 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setLoss(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -505,7 +505,7 @@ Export Script libLine_setLoss(lineId As Long, value As Double, Return Long)
 End Script
 
 ' 设置 lossOffset 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setLossOffset(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -521,7 +521,7 @@ Export Script libLine_setLossOffset(lineId As Long, value As Double, Return Long
 End Script
 
 ' 设置 lossInfoMul 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setLossInfMul(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -537,7 +537,7 @@ Export Script libLine_setLossInfMul(lineId As Long, value As Double, Return Long
 End Script
 
 ' 设置 lossInfoMul 值
-' @return 1-设置成功 0-设置失败
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setLossInfMin(lineId As Long, value As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -555,11 +555,11 @@ End Script
 ' ----------------------------------- 顶点设置
 
 ' 设置顶点
-' @param lineId 线 id
-' @param pId 顶点 id
-' @param pX 顶点 x 值
-' @param pY 顶点 y 值
-' @return 1-设置成功 0-设置失败
+' - @param lineId 线 id
+' - @param pId 顶点 id
+' - @param pX 顶点 x 值
+' - @param pY 顶点 y 值
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_setPoint(lineId As Long, pId As Long, pX As Double, pY As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -577,10 +577,10 @@ End Script
 
 ' 入队顶点(第一个顶点出队并将剩余的顶点前移)
 ' 使用了 tempInt tempInt2
-' @param lineId 线 id
-' @param pX 顶点 x 值
-' @param pY 顶点 y 值
-' @return 1-设置成功 0-设置失败
+' - @param lineId 线 id
+' - @param pX 顶点 x 值
+' - @param pY 顶点 y 值
+' - @return 1-设置成功 0-设置失败
 Export Script libLine_pushPoint(lineId As Long, pX As Double, pY As Double, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -604,8 +604,8 @@ End Script
 ' ----------------------------------- 参数获取
 
 ' 获取线条顶点数量
-' @param lineId 线条 id
-' @return vertCount
+' - @param lineId 线条 id
+' - @return vertCount
 Export Script libLine_getLineVertCount(lineId As Long, Return Long)
     If inited = 0 Or lineId < 0 Or lineId >= maxLineCount Then
         Return 0
@@ -652,9 +652,9 @@ End Script
 
 ' 计算衰减参数
 ' 使用了 tempVal tempVal2 tempVal3
-' @param lineId 线 id
-' @param segmentId 片段 id [1, vertCount - 1]
-' @return 衰减参数 [0, 1]
+' - @param lineId 线 id
+' - @param segmentId 片段 id [1, vertCount - 1]
+' - @return 衰减参数 [0, 1]
 Script p_libLine_calcLoss(lineId As Long, segmentId As Long, Return Double)
     tempVal = Array(libLineList(lineId + linePCountStartIdx)) - 1                               ' segmentCount
     If tempVal <= 1 Then
@@ -702,10 +702,10 @@ End Script
 
 ' 应用衰减到参数
 ' 使用了 tempVal
-' @param lineId 线 id
-' @param value 目标参数值
-' @param loss 衰减值
-' @return 计算结果 [0, ∞)
+' - @param lineId 线 id
+' - @param value 目标参数值
+' - @param loss 衰减值
+' - @return 计算结果 [0, ∞)
 Script p_libLine_calcApplyLoss(lineId As Long, value As Double, loss As Double, Return Double)
     If value >= 0 Then
         Return value
@@ -722,8 +722,8 @@ End Script
 
 ' 计算线段 bitmap 的各个参数 并存到对应全局变量(类似于寄存器的用法)中
 ' 使用了 tempVal tempVal2 tempVal3 disA disB
-' @param lineId 线 id
-' @param segmentId 线段 id [1, vertCount - 1]
+' - @param lineId 线 id
+' - @param segmentId 线段 id [1, vertCount - 1]
 Script p_libLine_calcLineFactor(lineId As Long, segmentId As Long)
     ' 变换中心点为 bitmap 左上角点
 

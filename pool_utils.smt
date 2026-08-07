@@ -20,7 +20,7 @@ Dim tempItrIdx As Integer = 0
 Dim tempItrCount As Integer = 0
 
 ' 初始化池
-' @param count: 池内元素最大量
+' - @param count: 池内元素最大量
 Export Script PoolUtils_Init(count As Integer)
 	allInstCount = count
 	
@@ -80,7 +80,7 @@ Export Script PoolUtils_GetInstance(Return Integer)
 End Script
 
 ' 回收实例
-' @param instId: 要回收的实例 id
+' - @param instId: 要回收的实例 id
 Export Script PoolUtils_RecInstance(instId As Integer)
 	For i = 0 To allInstCount - 1
 		If Array(PUinstancePool(i)) = instId Then
@@ -92,7 +92,7 @@ Export Script PoolUtils_RecInstance(instId As Integer)
 End Script
 
 ' 清空实例
-' @param instId: 要回收的实例 id
+' - @param instId: 要回收的实例 id
 Export Script PoolUtils_ClcInstance()
 	usedCount = 0
 	For i = 0 To allInstCount - 1
@@ -101,7 +101,7 @@ Export Script PoolUtils_ClcInstance()
 End Script
 
 ' 初始化池对象
-' @param count: 池内元素最大量
+' - @param count: 池内元素最大量
 Export Script PoolUtils_InitInst(idx As Integer, instId As Integer)
 	If idx < 0 Or idx >= allInstCount Then
 		Return
@@ -111,7 +111,7 @@ Export Script PoolUtils_InitInst(idx As Integer, instId As Integer)
 End Script
 
 ' 根据索引获取实例 id
-' @param idx: 索引
+' - @param idx: 索引
 Export Script PoolUtils_GetInstanceByIdx(idx As Integer, Return Integer)
 	If idx >= 0 Or idx < allInstCount Then
 		Return Array(PUinstancePool(idx))
@@ -120,7 +120,7 @@ Export Script PoolUtils_GetInstanceByIdx(idx As Integer, Return Integer)
 End Script
 
 ' 根据索引获取实例 id 的使用情况
-' @param idx: 索引
+' - @param idx: 索引
 Export Script PoolUtils_GetUsageByIdx(idx As Integer, Return Integer)
 	If idx >= 0 Or idx < allInstCount Then
 		Return Array(PUidRec(idx))
@@ -129,7 +129,7 @@ Export Script PoolUtils_GetUsageByIdx(idx As Integer, Return Integer)
 End Script
 
 ' 迭代正在使用的实例
-' @return 实例 id 每完成一个迭代循环 会返回一次 -1
+' - @return 实例 id 每完成一个迭代循环 会返回一次 -1
 Export Script PoolUtils_ItrUsageInstance(Return Integer)
 	If usedCount = 0 Then
 		tempItrCount = 0

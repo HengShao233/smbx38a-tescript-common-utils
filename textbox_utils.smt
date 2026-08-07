@@ -717,7 +717,7 @@ End Script
 
 ' ----------------------------------------------------- export function
 ' 加载 string
-' @param ss: 要加载的 string
+' - @param ss: 要加载的 string
 Export Script TextboxLowLevel_LoadString(ss As String, Return Integer)
     If ss = "" Then
         Call __txtBox_Clean()
@@ -732,7 +732,7 @@ Export Script TextboxLowLevel_LoadString(ss As String, Return Integer)
 End Script
 
 ' 无视所有阻拦绘制到目标探针
-' @param seek: 绘制目标(若要绘制到结尾则 seek 可以填 10000)
+' - @param seek: 绘制目标(若要绘制到结尾则 seek 可以填 10000)
 Export Script TextboxLowLevel_DrawToSeek(seek As Long, Return Integer)
     If __box_wid = 0 Or __len = 0 Or __box_hei = 0 Then
         __wait = 0
@@ -826,7 +826,7 @@ End Script
 
 ' ----------------------------------------------------- atribute setter
 ' 设置字符贴图集 npc
-' @param id: 字符贴图集 npc id
+' - @param id: 字符贴图集 npc id
 Export Script TextboxLowLevel_SetNpcSrc(id As Long)
     If id <> __box_npc Then
         __box_npc = id
@@ -835,7 +835,7 @@ Export Script TextboxLowLevel_SetNpcSrc(id As Long)
 End Script
 
 ' 设置字符 zpos
-' @param zpos: 字符 zpos
+' - @param zpos: 字符 zpos
 Export Script TextboxLowLevel_SetZpos(zpos As Double)
     If Abs(zpos - __box_bmpZpos) > 0.0000001  Then
         __box_bmpZpos = zpos
@@ -844,7 +844,7 @@ Export Script TextboxLowLevel_SetZpos(zpos As Double)
 End Script
 
 ' 设置文本框宽度
-' @param wid: 文本框宽度(没有宽度限制可填 -1)
+' - @param wid: 文本框宽度(没有宽度限制可填 -1)
 Export Script TextboxLowLevel_SetWidth(wid As Long)
     If wid <> __box_wid Then
         If __box_wid <> 0 And wid = 0 Then
@@ -859,7 +859,7 @@ Export Script TextboxLowLevel_SetWidth(wid As Long)
 End Script
 
 ' 设置文本框高度
-' @param hei: 文本框高度(没有高度限制可填 -1)
+' - @param hei: 文本框高度(没有高度限制可填 -1)
 Export Script TextboxLowLevel_SetHeight(hei As Integer)
     If hei <> __box_hei Then
         If __box_hei <> 0 And hei = 0 Then
@@ -874,7 +874,7 @@ Export Script TextboxLowLevel_SetHeight(hei As Integer)
 End Script
 
 ' 获得文本框宽度
-' @return 文本框宽
+' - @return 文本框宽
 Export Script TextboxLowLevel_GetWidth(Return Integer)
     If __box_wid < 0 Or __box_wid = 10000 Then
         Return __posSeekX - __box_posX
@@ -883,7 +883,7 @@ Export Script TextboxLowLevel_GetWidth(Return Integer)
 End Script
 
 ' 获得文本框高度
-' @return 文本框高
+' - @return 文本框高
 Export Script TextboxLowLevel_GetHeight(Return Integer)
     If __box_hei < 0 Or __box_hei = 10000 Then
         Return __posSeekY - __box_posY
@@ -892,7 +892,7 @@ Export Script TextboxLowLevel_GetHeight(Return Integer)
 End Script
 
 ' 设置文本框坐标(左上角点)
-' @param x: x 坐标值
+' - @param x: x 坐标值
 Export Script TextboxLowLevel_SetPosX(x As Integer)
     If x <> __box_posX Then
         __box_posX = x
@@ -901,7 +901,7 @@ Export Script TextboxLowLevel_SetPosX(x As Integer)
 End Script
 
 ' 设置文本框坐标(左上角点)
-' @param y: y 坐标值
+' - @param y: y 坐标值
 Export Script TextboxLowLevel_SetPosY(y As Integer)
     If y <> __box_posY Then
         __box_posY = y
@@ -910,19 +910,19 @@ Export Script TextboxLowLevel_SetPosY(y As Integer)
 End Script
 
 ' 获得文本框坐标(左上角点)
-' @return x 坐标值
+' - @return x 坐标值
 Export Script TextboxLowLevel_GetPosX(Return Integer)
     Return __box_posX
 End Script
 
 ' 获得文本框坐标(左上角点)
-' @return y 坐标值
+' - @return y 坐标值
 Export Script TextboxLowLevel_GetPosY(Return Integer)
     Return __box_posY
 End Script
 
 ' 设置文本字符大小(像素数)
-' @param size: 字符大小
+' - @param size: 字符大小
 Export Script TextboxLowLevel_SetSize(size As Integer)
     If size <> __box_size Then
         If __box_size <> 0 And size = 0 Then
@@ -934,7 +934,7 @@ Export Script TextboxLowLevel_SetSize(size As Integer)
 End Script
 
 ' 设置文本字符间距
-' @param spc: 字符间距(要求大于零)
+' - @param spc: 字符间距(要求大于零)
 Export Script TextboxLowLevel_SetCharSpacing(spc As Integer)
     If spc <> __box_charSpacing Then
         __box_charSpacing = __txtBox_Max(spc, 0.0)
@@ -943,7 +943,7 @@ Export Script TextboxLowLevel_SetCharSpacing(spc As Integer)
 End Script
 
 ' 设置文本行距
-' @param spc: 行距(要求大于零)
+' - @param spc: 行距(要求大于零)
 Export Script TextboxLowLevel_SetLineSpacing(spc As Integer)
     If spc <> __box_lineSpacing Then
         __box_lineSpacing = __txtBox_Max(spc, 0.0)
@@ -952,7 +952,7 @@ Export Script TextboxLowLevel_SetLineSpacing(spc As Integer)
 End Script
 
 ' 设置字符 bitmap 申请的起始 id
-' @param id: 起始 id
+' - @param id: 起始 id
 Export Script TextboxLowLevel_SetBmpIdStart(id As Integer)
     If id <> __box_bmpStart Then
         Call __txtBox_ClearBmp()
@@ -962,7 +962,7 @@ Export Script TextboxLowLevel_SetBmpIdStart(id As Integer)
 End Script
 
 ' 设置文本框对其方案
-' @param typ: 0-左对齐 | 1-右对齐 | 2-居中对齐
+' - @param typ: 0-左对齐 | 1-右对齐 | 2-居中对齐
 Export Script TextboxLowLevel_SetAlign(typ As Integer)
     If typ <> __box_alignType Then
         __box_alignType = typ
@@ -1075,26 +1075,26 @@ Dim __isCreated As Integer = 0
 Dim __isDestroy As Integer = 0
 
 ' 设置对话框透明度
-' @param a 透明度
-' @param aFrom 原透明度
+' - @param a 透明度
+' - @param aFrom 原透明度
 Export Script Textbox_StoreMsgAlpha(a As Double, aFrom As Double)
     __msg_a_param_cache = a
     __msg_from_a_param_cache = aFrom
 End Script
 
 ' 设置头像透明度
-' @param a 透明度
-' @param aFrom 原透明度
+' - @param a 透明度
+' - @param aFrom 原透明度
 Export Script Textbox_StoreAvatarAlpha(a As Double, aFrom As Double)
     __msg_avatar_a_param_cache = a
     __msg_from_avatar_a_param_cache = aFrom
 End Script
 
 ' 设置对话框位置 (屏幕坐标)
-' @param x x 位置
-' @param y y 位置
-' @param w 宽
-' @param h 高
+' - @param x x 位置
+' - @param y y 位置
+' - @param w 宽
+' - @param h 高
 Export Script Textbox_StoreMsgShape(x As Integer, y As Integer, w As Integer, h As Integer)
     __msg_pX_param_cache = x
     __msg_pY_param_cache = y
@@ -1103,10 +1103,10 @@ Export Script Textbox_StoreMsgShape(x As Integer, y As Integer, w As Integer, h 
 End Script
 
 ' 设置对话框初始位置 (屏幕坐标)
-' @param x x 位置
-' @param y y 位置
-' @param w 宽
-' @param h 高
+' - @param x x 位置
+' - @param y y 位置
+' - @param w 宽
+' - @param h 高
 Export Script Textbox_StoreMsgFromShape(x As Integer, y As Integer, w As Integer, h As Integer)
     __msg_from_pX_param_cache = x
     __msg_from_pY_param_cache = y
@@ -1115,11 +1115,11 @@ Export Script Textbox_StoreMsgFromShape(x As Integer, y As Integer, w As Integer
 End Script
 
 ' 设置对话框头像
-' @param npcId 头像的 npc id
-' @param srcX 头像在 npc 贴图中的 x 位置
-' @param srcY 头像在 npc 贴图中的 y 位置
-' @param srcW 头像在 npc 贴图中的宽
-' @param srcH 头像在 npc 贴图中的高
+' - @param npcId 头像的 npc id
+' - @param srcX 头像在 npc 贴图中的 x 位置
+' - @param srcY 头像在 npc 贴图中的 y 位置
+' - @param srcW 头像在 npc 贴图中的宽
+' - @param srcH 头像在 npc 贴图中的高
 Export Script Textbox_StoreAvatar(npcId As Long, srcX As Integer, srcY As Integer, srcW As Integer, srcH As Integer)
     __msg_avatar_npcId_param_cache = npcId
     __msg_avatar_srcX_param_cache = srcX
@@ -1129,10 +1129,10 @@ Export Script Textbox_StoreAvatar(npcId As Long, srcX As Integer, srcY As Intege
 End Script
 
 ' 设置头像位置 (屏幕坐标)
-' @param x x 位置
-' @param y y 位置
-' @param w 宽
-' @param h 高
+' - @param x x 位置
+' - @param y y 位置
+' - @param w 宽
+' - @param h 高
 Export Script Textbox_StoreAvatarShape(x As Integer, y As Integer, w As Integer, h As Integer)
     __msg_avatar_pX_param_cache = x
     __msg_avatar_pY_param_cache = y
@@ -1141,10 +1141,10 @@ Export Script Textbox_StoreAvatarShape(x As Integer, y As Integer, w As Integer,
 End Script
 
 ' 设置头像初始位置 (屏幕坐标)
-' @param x x 位置
-' @param y y 位置
-' @param w 宽
-' @param h 高
+' - @param x x 位置
+' - @param y y 位置
+' - @param w 宽
+' - @param h 高
 Export Script Textbox_StoreAvatarFromShape(x As Integer, y As Integer, w As Integer, h As Integer)
     __msg_from_avatar_pX_param_cache = x
     __msg_from_avatar_pY_param_cache = y
@@ -1153,19 +1153,19 @@ Export Script Textbox_StoreAvatarFromShape(x As Integer, y As Integer, w As Inte
 End Script
 
 ' 设置动画参数偏移量
-' @param msgBox 对话框的动画参数偏移量
-' @param avatar 头像的动画参数偏移量
+' - @param msgBox 对话框的动画参数偏移量
+' - @param avatar 头像的动画参数偏移量
 Export Script Textbox_SetAnimFacOffset(msgBox As Double, avatar As Double)
     __animFacOffset_msgBox = msgBox
     __animFacOffset_avatar = avatar
 End Script
 
 ' 直接设置头像 (可以用于快速修改头像表情, 没有任何过渡动画, 也不支持改变头像大小)
-' @param npcId 头像的 npc id
-' @param srcX 头像在 npc 贴图中的 x 位置
-' @param srcY 头像在 npc 贴图中的 y 位置
-' @param srcW 头像在 npc 贴图中的宽
-' @param srcH 头像在 npc 贴图中的高
+' - @param npcId 头像的 npc id
+' - @param srcX 头像在 npc 贴图中的 x 位置
+' - @param srcY 头像在 npc 贴图中的 y 位置
+' - @param srcW 头像在 npc 贴图中的宽
+' - @param srcH 头像在 npc 贴图中的高
 Export Script Textbox_SetAvatarImm(npcId As Long, srcX As Integer, srcY As Integer, srcW As Integer, srcH As Integer, Return Integer)
     If __isCreated = 0 Then
         Return 0
@@ -1191,9 +1191,9 @@ Export Script Textbox_SetAvatarImm(npcId As Long, srcX As Integer, srcY As Integ
 End Script
 
 ' 直接设置九宫格 npc id (可以用于快速修改头像表情, 没有任何过渡动画, 也不支持改变头像大小)
-' @param npcId 头像的 npc id
-' @param srcX srcX
-' @param srcY srcY
+' - @param npcId 头像的 npc id
+' - @param srcX srcX
+' - @param srcY srcY
 Export Script Textbox_Set9GridNpcIdImm(npcId As Long, srcX As Integer, srcY As Integer, Return Integer)
     __msg_9Grid_npcId = npcId
     If __isCreated = 0 Then
@@ -1227,8 +1227,8 @@ Export Script Textbox_Set9GridNpcIdImm(npcId As Long, srcX As Integer, srcY As I
 End Script
 
 ' 提交对话文本 (T 串)
-' @param txt T 串文本
-' @param animStartFac 过渡动画设置 -1: 退场和入场; 0: 仅入场; 1: 硬切无动画
+' - @param txt T 串文本
+' - @param animStartFac 过渡动画设置 -1: 退场和入场; 0: 仅入场; 1: 硬切无动画
 Export Script Textbox_Submit(txt As String, animStartFac As Double)
     If txt = "" Then
         __isDestroy = 1
@@ -2105,8 +2105,8 @@ End Script
 
 ' ----------------------------------------------------- 外部函数
 ' 设置跟随目标的 id
-' @param id 跟随目标 id
-' @param type 跟随目标类型:
+' - @param id 跟随目标 id
+' - @param type 跟随目标类型:
 '     1 - 跟随 npc
 '     2 - 跟随 bitmap
 '     3 - 跟随 character
@@ -2121,8 +2121,8 @@ Export Script TextboxLite_StoreTargetId(id As Integer, type As Integer)
 End Script
 
 ' 设置位置
-' @param x x 坐标
-' @param y y 坐标
+' - @param x x 坐标
+' - @param y y 坐标
 Export Script TextboxLite_StorePos(x As Long, y As Long)
     __ret_s = __bubbleShapeData_cache
     Call __writeInt_2Char("", 1, x)
@@ -2131,44 +2131,44 @@ Export Script TextboxLite_StorePos(x As Long, y As Long)
 End Script
 
 ' 设置锚点
-' @param x x 轴向锚点 [0, 1]
-' @param y y 轴向锚点 [0, 1]
+' - @param x x 轴向锚点 [0, 1]
+' - @param y y 轴向锚点 [0, 1]
 Export Script TextboxLite_StoreAnchor(x As Double, y As Double)
     __anchor_cache_x = x
     __anchor_cache_y = y
 End Script
 
 ' 设置偏移
-' @param x x 轴向偏移
-' @param y y 轴向偏移
+' - @param x x 轴向偏移
+' - @param y y 轴向偏移
 Export Script TextboxLite_StoreOffset(x As Long, y As Long)
     __offset_cache_x = x
     __offset_cache_y = y
 End Script
 
 ' 设置宽度限制
-' @param x 宽度限制
+' - @param x 宽度限制
 Export Script TextboxLite_StoreWidth(x As Integer)
     __wid_cache = x
 End Script
 
 ' 设置最大停留时间
-' @param x 最大停留时间
+' - @param x 最大停留时间
 Export Script TextboxLite_StoreTime(x As Integer)
     Call __writeInt_char(__bubbleShapeData_cache, 14, x)
     __bubbleShapeData_cache = __ret_s
 End Script
 
 ' 设置字体大小
-' @param x 字体大小
+' - @param x 字体大小
 Export Script TextboxLite_StoreSize(x As Integer)
     __size_cache = x
 End Script
 
 ' 设置字体颜色
-' @param r 字体颜色红色通道
-' @param g 字体颜色绿色通道
-' @param b 字体颜色蓝色通道
+' - @param r 字体颜色红色通道
+' - @param g 字体颜色绿色通道
+' - @param b 字体颜色蓝色通道
 Export Script TextboxLite_StoreColor(r As Integer, g As Integer, b As Integer)
     __color_cache_r = r
     __color_cache_g = g
@@ -2182,9 +2182,9 @@ Export Script TextboxLite_Clear()
 End Script
 
 ' 设置气泡九宫格
-' @param npcId npc id
-' @param srcX srcX
-' @param srcY srcY
+' - @param npcId npc id
+' - @param srcX srcX
+' - @param srcY srcY
 Export Script TextboxLite_Store9Grid(npcId As Long, srcX As Integer, srcY As Integer)
     __lBox_9Grid_cache_npcId = npcId
     __lBox_9Grid_cache_x = srcX
@@ -2192,8 +2192,8 @@ Export Script TextboxLite_Store9Grid(npcId As Long, srcX As Integer, srcY As Int
 End Script
 
 ' 新增小对话框
-' @param content 对话框内容 (已格式化文本)
-' @return 是否成功新增
+' - @param content 对话框内容 (已格式化文本)
+' - @return 是否成功新增
 Export Script TextboxLite_Submit(content As String, Return Integer)
     If Len(__bubbleAllocateQueue_s) >= 8 Then
         Call __releaseLast()
